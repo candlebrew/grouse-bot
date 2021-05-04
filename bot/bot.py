@@ -133,7 +133,7 @@ async def time(ctx, timeType: typing.Optional[str]):
         else:
             await ctx.send("It is day " + str(currentDay) + " of " + str(currentSeason) + " in Year " + str(currentYear) + ".")
 
-@bot.group(aliases=["remind","r"])
+@bot.group(aliases=["remind","r"], invoke_without_command=True)
 async def reminder(ctx):
     pass
     
