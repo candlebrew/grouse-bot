@@ -65,8 +65,8 @@ async def on_ready():
 
 async def season_task():
     while True:
-        #seasonChannel = bot.get_channel(testID)
-        seasonChannel = bot.get_channel(seasonID)
+        seasonChannel = bot.get_channel(testID)
+        #seasonChannel = bot.get_channel(seasonID)
         lastDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
         now = datetime.datetime.now()
         if now.hour >= 7:
@@ -143,7 +143,7 @@ async def time(ctx, timeType: typing.Optional[str]):
         else:
             await ctx.send("It is day " + str(currentDay) + " of " + str(currentSeason) + " in Year " + str(currentYear) + ".")
 
-@bot.group(aliases=["remind","r"])
+@bot.group(aliases=["remind","r","timer"])
 async def reminder(ctx):
     pass
     
