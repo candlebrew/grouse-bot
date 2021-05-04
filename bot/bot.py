@@ -199,23 +199,22 @@ async def forage(ctx):
 @reminder.command(aliases=["m","med","mix"])
 @commands.cooldown(1, 3600, commands.BucketType.user)
 async def medicine(ctx, duration: typing.Optional[str]):
-    elif type == "medicine":
-        if duration is None:
+    if duration is None:
+        await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
+    else:
+        try:
+            hour, minutes = map(int, duration.split("h"))
+            if hour > 3:
+                await ctx.send("You can only set a reminder up to 3 hours long.")
+            else:
+                await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
+                waitTime = hour * 60
+                waitTime += minutes
+                waitTime = waitTime * 60
+                await asyncio.sleep(waitTime)
+                await dm_user(user,"medicine")
+        except:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
-        else:
-            try:
-                hour, minutes = map(int, duration.split("h"))
-                if hour > 3:
-                    await ctx.send("You can only set a reminder up to 3 hours long.")
-                else:
-                    await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
-                    waitTime = hour * 60
-                    waitTime += minutes
-                    waitTime = waitTime * 60
-                    await asyncio.sleep(waitTime)
-                    await dm_user(user,"medicine")
-            except:
-                await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
 
 @hunting.error
 async def hunt_error(ctx, error):
