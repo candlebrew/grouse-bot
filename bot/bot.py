@@ -11,24 +11,22 @@ import asyncpg
 
 db = None
 
-masterSetupSQL = 
-'''CREATE TABLE IF NOT EXISTS master_table (
-    id TEXT,
-    season TEXT,
-    day INT,
-    year INT,
-    day_check INT
-    );'''
+masterSetupSQL = '''
+    CREATE TABLE IF NOT EXISTS master_table (
+        id TEXT,
+        season TEXT,
+        day INT,
+        year INT,
+        day_check INT
+        );'''
 
-timeCheckSQL = 
-'''
-SELECT season FROM master_table WHERE id = '00MASTER00';
-'''
+timeCheckSQL = '''
+    SELECT season FROM master_table WHERE id = '00MASTER00';
+    '''
 
-timeMasterSQL = 
-'''
-INSERT INTO master_table (id,season,day,year,day_check) VALUES ('00MASTER00','Spring',4,5,4);
-'''
+timeMasterSQL = '''
+    INSERT INTO master_table (id,season,day,year,day_check) VALUES ('00MASTER00','Spring',4,5,4);
+    '''
 
 ## Connecting the DB ----------------------------------------------------------
 async def run():
