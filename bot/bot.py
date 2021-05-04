@@ -43,23 +43,28 @@ async def run():
 ## Bot Setup ----------------------------------------------------------
     
 token = os.environ.get('DISCORD_BOT_TOKEN')
+devID = os.environ.get('DEV_ID')
 client = discord.Client()
 
 bot = commands.Bot(command_prefix='gh!', db=db)
 
 dayHours = [1,3,5,7,9,11,13,15,17,19,21,23]
 
+def is_dev():
+    def predicate(ctx):
+        return ctx.message.author.id == devID
+    return commands.check(predicate)
+
 ## Code Here ----------------------------------------------------------
 @bot.event
 async def on_ready():
     bot.loop.create_task(season_task())
 
-
 async def season_task():
     while True:
         lastDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
         now = datetime.datetime.now()
-        if now.hour == 7:
+        if now.hour >= 7:
             if now.day != lastDay:
                 # set day forwrad by one
                 newDayCheck = now.day
@@ -88,6 +93,37 @@ async def season_task():
                 await db.execute("UPDATE master_table SET year = $1 WHERE id = '00MASTER00';",newYear)
                 await db.execute("UPDATE master_table SET day_check = $1 WHERE id = '00MASTER00';",newDayCheck)
         await asyncio.sleep(300)
+
+@bot.group()
+async def admin(ctx):
+    pass
+
+@admin.group()
+async def set(ctx):
+    pass
+    
+@admin.group()
+async def get(ctx):
+    pass
+    
+@set.command()
+@is_dev()
+async def day(ctx, newDay: int):
+    await db.execute("UPDATE master_table SET day = $1 WHERE id = '00MASTER00';",newDay)
+    await ctx.send("Your new day has been set to " + str(newDay))
+    
+@set.command()
+@is_dev()
+async def daycheck(ctx, newDay: int):
+    await db.execute("UPDATE master_table SET day_check = $1 WHERE id = '00MASTER00';",newDay)
+    await ctx.send("Your new daycheck has been set to " + str(newDay))
+    
+@get.command()
+@is_dev()
+async def daycheck(ctx):
+    dayCheckDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
+    await ctx.send("Daycheck: " + str(dayCheckDay))
+    
 
 @bot.command(alisaes=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
