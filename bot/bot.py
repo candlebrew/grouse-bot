@@ -193,7 +193,7 @@ async def timer(ctx, minutes: int):
     await ctx.send("I'll remind you in " + str(minutes) + " minutes!")
     await asyncio.sleep(seconds)
     try:
-        await bot.send_message(user, "Here is your reminder!")
+        await client.send_message(user, "Here is your reminder!")
     except:
         await ctx.send(mention + " Here is your reminder!")
 
