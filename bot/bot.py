@@ -192,10 +192,18 @@ async def timer(ctx, minutes: int):
     seconds = minutes * 60
     await ctx.send("I'll remind you in " + str(minutes) + " minutes!")
     await asyncio.sleep(seconds)
-    try:
-        await client.send_message(user, "Here is your reminder!")
-    except:
-        await ctx.send(mention + " Here is your reminder!")
+    userDM = user.dm_channel
+    if userDM is None:
+        try: # to create a DM channel
+            userDM = await user.create_dm()
+            await userDM.send("Here is your reminder!")
+        except: # not allowed, send in ctx
+            await ctx.send(mention + " Here is your reminder!")
+    else:
+        try: # to send in the pre-existing DM
+            await userDM.send("Here is your reminder!")
+        except: # not allowed, send in ctx
+            await ctx.send(mention + " Here is your reminder!")
 
     
 ## Bot Setup & Activation ----------------------------------------------------------
