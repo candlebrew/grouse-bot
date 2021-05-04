@@ -169,6 +169,7 @@ async def scout(ctx, type: typing.Optional[str]):
         await asyncio.sleep(6000)
         await dm_user(user,"rescout")
     else:
+        duration = type
         if duration is None:
             await ctx.send("I'll remind you about your scout in 1 hour and 40 minutes!")
             await asyncio.sleep(6000)
