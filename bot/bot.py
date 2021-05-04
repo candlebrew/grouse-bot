@@ -27,7 +27,6 @@ timeCheckSQL = '''
 timeMasterSQL = '''
     INSERT INTO master_table (id,season,day,year,day_check) VALUES ('00MASTER00','Spring',4,5,4);
     '''
-
 ## Connecting the DB ----------------------------------------------------------
 async def run():
     global db
@@ -60,10 +59,10 @@ async def season_task():
     while True:
         lastDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
         now = datetime.datetime.now()
-        if now.Hour == 7:
-            if now.Day != lastDay:
+        if now.hour == 7:
+            if now.day != lastDay:
                 # set day forwrad by one
-                newDayCheck = now.Day
+                newDayCheck = now.day
                 oldDay = await db.fetchval('''SELECT day FROM master_table WHERE id = '00MASTER00';''')
                 oldSeason = await db.fetchval('''SELECT season FROM master_table WHERE id = '00MASTER00';''')
                 oldYear = await db.fetchval('''SELECT year FROM master_table WHERE id = '00MASTER00';''')
@@ -93,7 +92,7 @@ async def season_task():
 @bot.command(alisaes=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
     now = datetime.datetime.now()
-    tempHour = now.Hour - 7
+    tempHour = now.hour - 7
     if tempHour < 0:
         newHour = 24 + tempHour
     else:
@@ -102,20 +101,20 @@ async def time(ctx, timeType: typing.Optional[str]):
     if timeType is None:
         await ctx.send("It is currently **" + now.strftime("%H:%M") + "** Wolvden Time.")
     if timeType in ["d","n","night","nighttime","nightime","daytime","day"]:
-        if now.Hour in dayHours:
+        if now.hour in dayHours:
             currentPhase = "daytime"
             nextPhase = "night"
         else:
             currentPhase = "nighttime"
             nextPhase = "day"
-        minutesLeft = 60 - now.Minute
+        minutesLeft = 60 - now.minute
         await ctx.send("It is currently " + currentPhase + ". **" + str(minutesLeft) + " minutes** until " + nextPhase + ".")
     if timeType in ["e","event"]:
         ## TODO how much time left
         pass
     if timeType in ["r","rollover"]:
-        minutesLeft = 60 - now.Minute
-        hoursLeft = 24 - now.Hour
+        minutesLeft = 60 - now.minute
+        hoursLeft = 24 - now.hour
         await ctx.send("**" + str(hoursLeft) + " hours " + str(minutesLeft) + " minutes** until rollover.")
     if timeType in ["season","s","year","y"]:
         ## TODO current wd day/time
