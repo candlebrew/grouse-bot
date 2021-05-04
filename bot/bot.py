@@ -209,7 +209,7 @@ async def medicine(ctx, duration: typing.Optional[str]):
             hour, minutes = map(int, duration.split("h"))
             if hour > 3:
                 await ctx.send("You can only set a reminder up to 3 hours long.")
-                await medicine.reset_cooldown(ctx)
+                await reminder.medicine.reset_cooldown(ctx)
             else:
                 await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
                 waitTime = hour * 60
@@ -219,7 +219,7 @@ async def medicine(ctx, duration: typing.Optional[str]):
                 await dm_user(user,"medicine")
         except:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
-            await medicine.reset_cooldown(ctx)
+            await reminder.medicine.reset_cooldown(ctx)
 
 @hunting.error
 async def hunt_error(ctx, error):
