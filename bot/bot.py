@@ -43,7 +43,7 @@ async def run():
 ## Bot Setup ----------------------------------------------------------
     
 token = os.environ.get('DISCORD_BOT_TOKEN')
-devID = os.environ.get('DEV_ID')
+devID = int(os.environ.get('DEV_ID'))
 client = discord.Client()
 
 bot = commands.Bot(command_prefix='gh!', db=db)
