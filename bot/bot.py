@@ -133,7 +133,7 @@ async def time(ctx, timeType: typing.Optional[str]):
         else:
             await ctx.send("It is day " + str(currentDay) + " of " + str(currentSeason) + " in Year " + str(currentYear) + ".")
 
-@bot.group(aliases=["remind","r"], invoke_without_command=True)
+@bot.group(aliases=["remind","r"])
 async def reminder(ctx):
     pass
     
@@ -162,13 +162,13 @@ async def hunting(ctx):
     
 @reminder.command(aliases=["s","scouting"])
 @commands.cooldown(4, 6000, commands.BucketType.user)
-async def scout(ctx, type: str, duration: typing.Optional[str]):
+async def scout(ctx, type: typing.Optional[str]):
     user = ctx.message.author
     if type == "rescout":
         await ctx.send("I'll remind you about your rescout in 1 hour and 40 minutes!")
         await asyncio.sleep(6000)
         await dm_user(user,"rescout")
-    elif type == "scout":
+    else:
         if duration is None:
             await ctx.send("I'll remind you about your scout in 1 hour and 40 minutes!")
             await asyncio.sleep(6000)
@@ -186,7 +186,7 @@ async def scout(ctx, type: str, duration: typing.Optional[str]):
                     await asyncio.sleep(waitTime)
                     await dm_user(user,"rescout")
             except:
-                await ctx.send("Please send in #h# format! Ex. 1h40 for 1 hour & 40 minutes.") 
+                await ctx.send("Please send in #h# format! Ex. `gh!scout 1h40` for 1 hour & 40 minutes.") 
     
 @reminder.command(aliases=["f"])
 @commands.cooldown(1, 3600, commands.BucketType.user)
