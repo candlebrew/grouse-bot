@@ -209,7 +209,7 @@ async def medicine(ctx, duration: typing.Optional[str]):
             hour, minutes = map(int, duration.split("h"))
             if hour > 3:
                 await ctx.send("You can only set a reminder up to 3 hours long.")
-            await medicine.reset_cooldown(ctx)
+                await medicine.reset_cooldown(ctx)
             else:
                 await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
                 waitTime = hour * 60
