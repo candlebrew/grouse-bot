@@ -179,15 +179,17 @@ async def scout(ctx, type: typing.Optional[str]):
                 hour, minutes = map(int, duration.split("h"))
                 if (hour > 1) or (hour >= 1 and minutes > 40):
                     await ctx.send("You can only set a reminder up to 1 hour and 40 minutes long.")
+                    await ctx.command.reset_cooldown(ctx)
                 else:
                     await ctx.send("I'll remind you about your scout in " + str(hour) + " hour and " + str(minutes) + " minutes!")
                     waitTime = hour * 60
                     waitTime += minutes
                     waitTime = waitTime * 60
                     await asyncio.sleep(waitTime)
-                    await dm_user(user,"rescout")
+                    await dm_user(user,"scout")
             except:
                 await ctx.send("Please send in #h# format! Ex. `gh!scout 1h40` for 1 hour & 40 minutes.") 
+                await ctx.command.reset_cooldown(ctx)
     
 @reminder.command(aliases=["f"])
 @commands.cooldown(1, 3600, commands.BucketType.user)
@@ -207,6 +209,7 @@ async def medicine(ctx, duration: typing.Optional[str]):
             hour, minutes = map(int, duration.split("h"))
             if hour > 3:
                 await ctx.send("You can only set a reminder up to 3 hours long.")
+                await ctx.command.reset_cooldown(ctx)
             else:
                 await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
                 waitTime = hour * 60
@@ -216,6 +219,7 @@ async def medicine(ctx, duration: typing.Optional[str]):
                 await dm_user(user,"medicine")
         except:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
+                await ctx.command.reset_cooldown(ctx)
 
 @hunting.error
 async def hunt_error(ctx, error):
