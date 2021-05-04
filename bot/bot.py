@@ -190,7 +190,7 @@ async def scout(ctx, type: str, duration: typing.Optional[str]):
     
 @reminder.command(aliases=["f"])
 @commands.cooldown(1, 3600, commands.BucketType.user)
-async def forage(ctx)
+async def forage(ctx):
     user = ctx.message.author
     await ctx.send("I'll remind you about your forage in 1 hour!")
     await asyncio.sleep(3600)
@@ -198,7 +198,7 @@ async def forage(ctx)
     
 @reminder.command(aliases=["m","med","mix"])
 @commands.cooldown(1, 3600, commands.BucketType.user)
-async def medicine(ctx, duration: typing.Optional[str])
+async def medicine(ctx, duration: typing.Optional[str]):
     elif type == "medicine":
         if duration is None:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
