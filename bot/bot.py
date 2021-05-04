@@ -219,7 +219,7 @@ async def medicine(ctx, duration: typing.Optional[str]):
                 await dm_user(user,"medicine")
         except:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
-                await ctx.command.reset_cooldown(ctx)
+            await ctx.command.reset_cooldown(ctx)
 
 @hunting.error
 async def hunt_error(ctx, error):
