@@ -27,6 +27,7 @@ timeCheckSQL = '''
 timeMasterSQL = '''
     INSERT INTO master_table (id,season,day,year,day_check) VALUES ('00MASTER00','Spring',4,5,4);
     '''
+
 ## Connecting the DB ----------------------------------------------------------
 async def run():
     global db
@@ -44,6 +45,8 @@ async def run():
     
 token = os.environ.get('DISCORD_BOT_TOKEN')
 devID = int(os.environ.get('DEV_ID'))
+testID = int(os.environ.get('TEST_CHANNEL'))
+seasonID = int(os.environ.get('GH_DATE_CHANNEL'))
 client = discord.Client()
 
 bot = commands.Bot(command_prefix='gh!', db=db)
@@ -62,6 +65,8 @@ async def on_ready():
 
 async def season_task():
     while True:
+        seasonChannel = bot.get_channel(testID)
+        #seasonChannel = bot.get_channel(seasonID)
         lastDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
         now = datetime.datetime.now()
         if now.hour >= 7:
@@ -92,6 +97,11 @@ async def season_task():
                 await db.execute("UPDATE master_table SET season = $1 WHERE id = '00MASTER00';",newSeason)
                 await db.execute("UPDATE master_table SET year = $1 WHERE id = '00MASTER00';",newYear)
                 await db.execute("UPDATE master_table SET day_check = $1 WHERE id = '00MASTER00';",newDayCheck)
+                wdDay = await db.fetchval('''SELECT day FROM master_table WHERE id = '00MASTER00';''')
+                wdSeason = await db.fetchval('''SELECT season FROM master_table WHERE id = '00MASTER00';''')
+                newName = str(wdSeason) + " " + str(wdDay)
+                if seasonChannel.name != newName:
+                    await seasonChannel.edit(reason=None,name=newName)
         await asyncio.sleep(300)
 
 @bot.command(alisaes=["t"])
@@ -153,7 +163,6 @@ async def dm_user(user, type):
             await ctx.send(mention + " Your " + type + " is finished!")
     
 @reminder.command(aliases=["h","hunt"])
-@commands.cooldown(1, 1800, commands.BucketType.user)
 async def hunting(ctx):
     user = ctx.message.author
     await ctx.send("I'll remind you about your hunt in 30 minutes!")
@@ -161,7 +170,6 @@ async def hunting(ctx):
     await dm_user(user,"hunt")  
     
 @reminder.command(aliases=["s","scouting"])
-@commands.cooldown(4, 6000, commands.BucketType.user)
 async def scout(ctx, type: typing.Optional[str]):
     user = ctx.message.author
     if type == "rescout":
@@ -192,7 +200,6 @@ async def scout(ctx, type: typing.Optional[str]):
                 await ctx.command.reset_cooldown(ctx)
     
 @reminder.command(aliases=["f"])
-@commands.cooldown(1, 3600, commands.BucketType.user)
 async def forage(ctx):
     user = ctx.message.author
     await ctx.send("I'll remind you about your forage in 1 hour!")
@@ -200,7 +207,6 @@ async def forage(ctx):
     await dm_user(user,"forage")
     
 @reminder.command(aliases=["m","med","mix"])
-@commands.cooldown(1, 3600, commands.BucketType.user)
 async def medicine(ctx, duration: typing.Optional[str]):
     if duration is None:
         await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
