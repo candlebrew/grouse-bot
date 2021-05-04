@@ -7,7 +7,7 @@ import os
 import asyncio
 import asyncpg
 
-## https://discord.com/api/oauth2/authorize?client_id=838960211187859508&permissions=117824&scope=bot
+## https://discord.com/api/oauth2/authorize?client_id=838960211187859508&permissions=257104&scope=bot
 
 db = None
 
@@ -94,37 +94,6 @@ async def season_task():
                 await db.execute("UPDATE master_table SET day_check = $1 WHERE id = '00MASTER00';",newDayCheck)
         await asyncio.sleep(300)
 
-@bot.group()
-async def admin(ctx):
-    pass
-
-@admin.group()
-async def set(ctx):
-    pass
-    
-@admin.group()
-async def get(ctx):
-    pass
-    
-@set.command()
-@is_dev()
-async def day(ctx, newDay: int):
-    await db.execute("UPDATE master_table SET day = $1 WHERE id = '00MASTER00';",newDay)
-    await ctx.send("Your new day has been set to " + str(newDay))
-    
-@set.command()
-@is_dev()
-async def daycheck(ctx, newDay: int):
-    await db.execute("UPDATE master_table SET day_check = $1 WHERE id = '00MASTER00';",newDay)
-    await ctx.send("Your new daycheck has been set to " + str(newDay))
-    
-@get.command()
-@is_dev()
-async def daycheck(ctx):
-    dayCheckDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
-    await ctx.send("Daycheck: " + str(dayCheckDay))
-    
-
 @bot.command(alisaes=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
     now = datetime.datetime.now()
@@ -164,6 +133,71 @@ async def time(ctx, timeType: typing.Optional[str]):
         else:
             await ctx.send("It is day " + str(currentDay) + " of " + str(currentSeason) + " in Year " + str(currentYear) + ".")
 
+@bot.group(aliases=["remind","r"])
+async def reminder(ctx):
+    pass
+    
+@reminder.command(aliases=["h","hunt"])
+async def hunting(ctx):
+    user = ctx.message.author
+    mention = ctx.message.author.mention
+    await ctx.send("I'll remind you about your hunt in 30 minutes!")
+    await asyncio.sleep(1800)
+    try:
+        await bot.send_message(user, "Your hunt is finished!")
+    except:
+        await ctx.send(mention + " Your hunt is finished!")
+
+
+## ADMIN/DEV COMMANDS -------------------------------------------------------
+@bot.group()
+async def dev(ctx):
+    pass
+
+@dev.group()
+async def set(ctx):
+    pass
+    
+@dev.group()
+async def get(ctx):
+    pass
+    
+@dev.group()
+async def test(ctx):
+    pass
+    
+@set.command()
+@is_dev()
+async def day(ctx, newDay: int):
+    await db.execute("UPDATE master_table SET day = $1 WHERE id = '00MASTER00';",newDay)
+    await ctx.send("Your new day has been set to " + str(newDay))
+    
+@set.command()
+@is_dev()
+async def daycheck(ctx, newDay: int):
+    await db.execute("UPDATE master_table SET day_check = $1 WHERE id = '00MASTER00';",newDay)
+    await ctx.send("Your new daycheck has been set to " + str(newDay))
+    
+@get.command()
+@is_dev()
+async def daycheck(ctx):
+    dayCheckDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
+    await ctx.send("Daycheck: " + str(dayCheckDay))
+    
+@test.command()
+@is_dev()
+async def timer(ctx, minutes: int):
+    user = ctx.message.author
+    mention = ctx.message.author.mention
+    seconds = minutes * 60
+    await ctx.send("I'll remind you in " + str(minutes) + " minutes!")
+    await asyncio.sleep(seconds)
+    try:
+        await bot.send_message(user, "Here is your reminder!")
+    except:
+        await ctx.send(mention + " Here is your reminder!")
+
+    
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
 bot.run(token)
