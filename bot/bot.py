@@ -204,6 +204,7 @@ async def forage(ctx):
 async def medicine(ctx, duration: typing.Optional[str]):
     if duration is None:
         await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
+        await reminder.medicine.reset_cooldown(ctx)
     else:
         try:
             hour, minutes = map(int, duration.split("h"))
