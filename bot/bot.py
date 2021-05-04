@@ -116,12 +116,17 @@ async def time(ctx, timeType: typing.Optional[str]):
         minutesLeft = 60 - now.minute
         hoursLeft = 24 - now.hour
         await ctx.send("**" + str(hoursLeft) + " hours " + str(minutesLeft) + " minutes** until rollover.")
-    if timeType in ["season","s","year","y"]:
+    if timeType in ["season","s","year","y","date"]:
         ## TODO current wd day/time
         currentSeason = await db.fetchval('''SELECT season FROM master_table WHERE id = '00MASTER00';''')
         currentDay = await db.fetchval('''SELECT day FROM master_table WHERE id = '00MASTER00';''')
         currentYear = await db.fetchval('''SELECT year FROM master_table WHERE id = '00MASTER00';''')
-        await ctx.send("It is day " + str(currentDay) + " of " + str(currentSeason) + " in Year " + str(currentYear) + ".")
+        if timeType == "season":
+            await ctx.send("It is currently **" + str(currentSeason) + "**.")
+        elif timeType == "year":
+            await ctx.send("It is currently **Year " + str(currentYear) + "**.")
+        else:
+            await ctx.send("It is day " + str(currentDay) + " of " + str(currentSeason) + " in Year " + str(currentYear) + ".")
 
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
