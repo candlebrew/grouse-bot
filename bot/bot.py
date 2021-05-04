@@ -137,16 +137,105 @@ async def time(ctx, timeType: typing.Optional[str]):
 async def reminder(ctx):
     pass
     
+async def dm_user(user, type):
+    userDM = user.dm_channel
+    mention = user.mention
+    if userDM is None:
+        try: # to create a DM channel
+            userDM = await user.create_dm()
+            await userDM.send("Your " + type + " is finished!")
+        except: # not allowed, send in ctx
+            await ctx.send(mention + " Your " + type + " is finished!")
+    else:
+        try: # to send in the pre-existing DM
+            await userDM.send("Your " + type + " is finished!")
+        except: # not allowed, send in ctx
+            await ctx.send(mention + " Your " + type + " is finished!")
+    
 @reminder.command(aliases=["h","hunt"])
+@commands.cooldown(1, 1800, commands.BucketType.user)
 async def hunting(ctx):
     user = ctx.message.author
-    mention = ctx.message.author.mention
     await ctx.send("I'll remind you about your hunt in 30 minutes!")
     await asyncio.sleep(1800)
-    try:
-        await bot.send_message(user, "Your hunt is finished!")
-    except:
-        await ctx.send(mention + " Your hunt is finished!")
+    await dm_user(user,"hunt")  
+    
+@reminder.command(aliases=["s","scouting"])
+@commands.cooldown(4, 6000, commands.BucketType.user)
+async def scout(ctx, type: str, duration: typing.Optional[str]):
+    user = ctx.message.author
+    if type == "rescout":
+        await ctx.send("I'll remind you about your rescout in 1 hour and 40 minutes!")
+        await asyncio.sleep(6000)
+        await dm_user(user,"rescout")
+    elif type == "scout":
+        if duration is None:
+            await ctx.send("I'll remind you about your scout in 1 hour and 40 minutes!")
+            await asyncio.sleep(6000)
+            await dm_user(user,"scout")
+        else:
+            try:
+                hour, minutes = map(int, duration.split("h"))
+                if (hour > 1) or (hour >= 1 and minutes > 40):
+                    await ctx.send("You can only set a reminder up to 1 hour and 40 minutes long.")
+                else:
+                    await ctx.send("I'll remind you about your scout in " + str(hour) + " hour and " + str(minutes) + " minutes!")
+                    waitTime = hour * 60
+                    waitTime += minutes
+                    waitTime = waitTime * 60
+                    await asyncio.sleep(waitTime)
+                    await dm_user(user,"rescout")
+            except:
+                await ctx.send("Please send in #h# format! Ex. 1h40 for 1 hour & 40 minutes.") 
+    
+@reminder.command(aliases=["f"])
+@commands.cooldown(1, 3600, commands.BucketType.user)
+async def forage(ctx)
+    user = ctx.message.author
+    await ctx.send("I'll remind you about your forage in 1 hour!")
+    await asyncio.sleep(3600)
+    await dm_user(user,"forage")
+    
+@reminder.command(aliases=["m","med","mix"])
+@commands.cooldown(1, 3600, commands.BucketType.user)
+async def medicine(ctx, duration: typing.Optional[str])
+    elif type == "medicine":
+        if duration is None:
+            await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
+        else:
+            try:
+                hour, minutes = map(int, duration.split("h"))
+                if hour > 3:
+                    await ctx.send("You can only set a reminder up to 3 hours long.")
+                else:
+                    await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
+                    waitTime = hour * 60
+                    waitTime += minutes
+                    waitTime = waitTime * 60
+                    await asyncio.sleep(waitTime)
+                    await dm_user(user,"medicine")
+            except:
+                await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
+
+@hunting.error
+async def hunt_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send("You already have a hunting reminder set. :cold_sweat:")
+        
+@scout.error
+async def scout_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send("You already have max scouting reminders set. :cold_sweat:")
+        
+@medicine.error
+async def medicine_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send("You already have a medicine reminder set. :cold_sweat:")
+        
+@forage.error
+async def forage_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send("You already have a foraging reminders set. :cold_sweat:")
 
 
 ## ADMIN/DEV COMMANDS -------------------------------------------------------
@@ -192,18 +281,7 @@ async def timer(ctx, minutes: int):
     seconds = minutes * 60
     await ctx.send("I'll remind you in " + str(minutes) + " minutes!")
     await asyncio.sleep(seconds)
-    userDM = user.dm_channel
-    if userDM is None:
-        try: # to create a DM channel
-            userDM = await user.create_dm()
-            await userDM.send("Here is your reminder!")
-        except: # not allowed, send in ctx
-            await ctx.send(mention + " Here is your reminder!")
-    else:
-        try: # to send in the pre-existing DM
-            await userDM.send("Here is your reminder!")
-        except: # not allowed, send in ctx
-            await ctx.send(mention + " Here is your reminder!")
+
 
     
 ## Bot Setup & Activation ----------------------------------------------------------
