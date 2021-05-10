@@ -317,67 +317,67 @@ personalitiesList.extend(romanticList)
 personalitiesList.extend(stoicList)
 
 herbsDict = {
-    "aloe_uses": "Rich Healing Salve and Ringworm Salve"
-    "arnica_uses": "Mange Salve"
-    "bearberry_uses": "Constipation Cure and Tapeworm Remedy"
-    "boneset_uses": "Hepatitis Cure"
-    "buffaloberry_uses": "Constipation Cure and Rich Healing Salve"
-    "burning bush_uses": "Constipation Cure and Rich Healing Salve"
-    "carrionflower_uses": "Ear Mites Ointment"
-    "cedar bark_uses": "Tick Remedy"
-    "chaparral_uses": "Antidote and Rich Healing Salve"
-    "charcoal_uses": "Diarrhea Cure, Healing Salve, and Rich Healing Salve"
-    "dandelion_uses": "Cystitis Cure, Healing Salve, and Hepatitis Cure"
-    "feverfew_uses": "Heatstroke Remedy and Infection Balm"
-    "garlic_uses": "Tapeworm Remedy and Tick Remedy"
-    "ginger_uses": "Heatstroke Remedy"
-    "goldenseal_uses": "Cough Cure and Distemper Cure"
-    "guaiacum_uses": "Distemper Cure and Influenza Cure"
-    "kava_uses": "Cough Cure and Cystitis Cure"
-    "mullein_uses": "Distemper Cure"
-    "oregano_uses": "Infection Balm, Pox Balm, and Ringworm Salve"
-    "pineapple leaf_uses": "Cough Cure and Influenza Cure"
-    "redwood sorrel_uses": "Cystitis Cure and Pox Balm"
-    "spoonwood_uses": "Hepatitis Cure"
-    "st. john's wort_uses": "Infection Balm and Open Wound Salve"
-    "st john's wort_uses": "Infection Balm and Open Wound Salve"
-    "st. johns wort_uses": "Infection Balm and Open Wound Salve"
-    "st johns wort_uses": "Infection Balm and Open Wound Salve"
-    "tansy_uses": "Tapeworm Remedy"
-    "tobacco_uses": "Ear Mites Ointment, Fleas Remedy, Mange Salve, and Tick Remedy"
-    "turmeric_uses": "Ringworm Salve"
-    "winterfat_uses": "Ear Mites Ointment, Heatstroke Remedy, and Open Wound Salve"
-    "yarrow_uses": "Mange Salve, Open Wound Salve, and Pox Balm"
-    "aloe_locations": "Desert, Swamp, and Rainforest"
-    "arnica_locations": "All locations"
-    "bearberry_locations": "Deciduous Forest, Mountains, Coniferous Forest, Taiga, and Tundra"
-    "boneset_locations": "Deciduous Forest, Grasslands, Coniferous Forest, Prairie, Riparian Woodland, Taiga, and Swamp"
-    "buffaloberry_locations": "Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga"
-    "burning bush_locations": "Deciduous Forest, Grasslands, Coniferous Forest, Prairie, and Riparian Woodland"
-    "carrionflower_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Riparian Woodland, and Taiga"
-    "cedar bark_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, Desert, Swamp, and Rainforest"
-    "chaparral_locations": "Desert"
-    "charcoal_locations": "All" 
-    "dandelion_locations": "All"
-    "feverfew_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Rainforest"
-    "garlic_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
-    "ginger_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga
-    "goldenseal_locations": "Deciduous Forest, Grasslands, Coniferous Forest, and Riparian Woodland."
-    "guaiacum_locations": "Swamp and Rainforest"
-    "kava_locations": "Rainforest"
-    "mullein_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Desert"
-    "oregano_locations": "Mountains, Prairie, Desert, Swamp, and Rainforest"
-    "pineapple leaf_locations": "Rainforest"
-    "redwood sorrel_locations": "Mountains, Coniferous Forest, and Swamp"
-    "spoonwood_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Riparian Woodland, and Swamp"
-    "st. john's wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
-    "st john's wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
-    "st. johns wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
-    "st johns wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
-    "tansy_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Desert"
-    "tobacco_locations": "Mountains, Prairie, and Desert"
-    "turmeric_locations": "Swamp and Rainforest"
-    "winterfat_locations": "Mountains, Prairie, and Desert"
+    "aloe_uses": "Rich Healing Salve and Ringworm Salve",
+    "arnica_uses": "Mange Salve",
+    "bearberry_uses": "Constipation Cure and Tapeworm Remedy",
+    "boneset_uses": "Hepatitis Cure",
+    "buffaloberry_uses": "Constipation Cure and Rich Healing Salve",
+    "burning bush_uses": "Constipation Cure and Rich Healing Salve",
+    "carrionflower_uses": "Ear Mites Ointment",
+    "cedar bark_uses": "Tick Remedy",
+    "chaparral_uses": "Antidote and Rich Healing Salve",
+    "charcoal_uses": "Diarrhea Cure, Healing Salve, and Rich Healing Salve",
+    "dandelion_uses": "Cystitis Cure, Healing Salve, and Hepatitis Cure",
+    "feverfew_uses": "Heatstroke Remedy and Infection Balm",
+    "garlic_uses": "Tapeworm Remedy and Tick Remedy",
+    "ginger_uses": "Heatstroke Remedy",
+    "goldenseal_uses": "Cough Cure and Distemper Cure",
+    "guaiacum_uses": "Distemper Cure and Influenza Cure",
+    "kava_uses": "Cough Cure and Cystitis Cure",
+    "mullein_uses": "Distemper Cure",
+    "oregano_uses": "Infection Balm, Pox Balm, and Ringworm Salve",
+    "pineapple leaf_uses": "Cough Cure and Influenza Cure",
+    "redwood sorrel_uses": "Cystitis Cure and Pox Balm",
+    "spoonwood_uses": "Hepatitis Cure",
+    "st. john's wort_uses": "Infection Balm and Open Wound Salve",
+    "st john's wort_uses": "Infection Balm and Open Wound Salve",
+    "st. johns wort_uses": "Infection Balm and Open Wound Salve",
+    "st johns wort_uses": "Infection Balm and Open Wound Salve",
+    "tansy_uses": "Tapeworm Remedy",
+    "tobacco_uses": "Ear Mites Ointment, Fleas Remedy, Mange Salve, and Tick Remedy",
+    "turmeric_uses": "Ringworm Salve",
+    "winterfat_uses": "Ear Mites Ointment, Heatstroke Remedy, and Open Wound Salve",
+    "yarrow_uses": "Mange Salve, Open Wound Salve, and Pox Balm",
+    "aloe_locations": "Desert, Swamp, and Rainforest",
+    "arnica_locations": "All locations",
+    "bearberry_locations": "Deciduous Forest, Mountains, Coniferous Forest, Taiga, and Tundra",
+    "boneset_locations": "Deciduous Forest, Grasslands, Coniferous Forest, Prairie, Riparian Woodland, Taiga, and Swamp",
+    "buffaloberry_locations": "Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga",
+    "burning bush_locations": "Deciduous Forest, Grasslands, Coniferous Forest, Prairie, and Riparian Woodland",
+    "carrionflower_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Riparian Woodland, and Taiga",
+    "cedar bark_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, Desert, Swamp, and Rainforest",
+    "chaparral_locations": "Desert",
+    "charcoal_locations": "All" ,
+    "dandelion_locations": "All",
+    "feverfew_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Rainforest",
+    "garlic_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp",
+    "ginger_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga,
+    "goldenseal_locations": "Deciduous Forest, Grasslands, Coniferous Forest, and Riparian Woodland.",
+    "guaiacum_locations": "Swamp and Rainforest",
+    "kava_locations": "Rainforest",
+    "mullein_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Desert",
+    "oregano_locations": "Mountains, Prairie, Desert, Swamp, and Rainforest",
+    "pineapple leaf_locations": "Rainforest",
+    "redwood sorrel_locations": "Mountains, Coniferous Forest, and Swamp",
+    "spoonwood_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Riparian Woodland, and Swamp",
+    "st. john's wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp",
+    "st john's wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp",
+    "st. johns wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp",
+    "st johns wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp",
+    "tansy_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Desert",
+    "tobacco_locations": "Mountains, Prairie, and Desert",
+    "turmeric_locations": "Swamp and Rainforest",
+    "winterfat_locations": "Mountains, Prairie, and Desert",
     "yarrow_locations": "All"
     }
 
