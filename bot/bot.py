@@ -71,6 +71,7 @@ token = os.environ.get('DISCORD_BOT_TOKEN')
 devID = int(os.environ.get('DEV_ID'))
 testID = int(os.environ.get('TEST_CHANNEL'))
 seasonID = int(os.environ.get('GH_DATE_CHANNEL'))
+grouseID = int(os.environ.get('GH_GUILD'))
 client = discord.Client()
 
 bot = commands.Bot(command_prefix='gh!', db=db)
@@ -361,6 +362,16 @@ async def daycheck(ctx, newDay: int):
 async def daycheck(ctx):
     dayCheckDay = await db.fetchval('''SELECT day_check FROM master_table WHERE id = '00MASTER00';''')
     await ctx.send("Daycheck: " + str(dayCheckDay))
+    
+@get.command()
+@is_dev()
+async def id(ctx, userID: int):
+    user = await bot.fetch_user(userID)
+    name = user.name
+    grouseGuild = bot.fetch_guild(grouseID)
+    guildMember = await grouseGuild.fetch_member(userID)
+    displayName = guildMember.nick
+    await ctx.send(name + " | " + str(displayName))
     
 @test.command()
 @is_dev()
