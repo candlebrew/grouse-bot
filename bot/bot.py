@@ -222,8 +222,9 @@ async def set_timer(userID,timerType,duration):
 @reminder.command(aliases=["h","hunt"])
 async def hunting(ctx):
     user = ctx.message.author.id
-    now = datetime.datetime.now(datetime.timezone.utc)
-    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"hunt",now,"0h30")
+    timerType = "hunt"
+    duration = "0h30"
+    await set_timer(user,timerType,duration)
     await ctx.send("I'll remind you about your hunt in 30 minutes!")
     
 @reminder.command(aliases=["r","rescouting"])
