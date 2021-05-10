@@ -107,6 +107,199 @@ biomeDict = {
     "Desert_Dif": "difficult"
 }
 
+slotsDict = {
+    1: "Free (starter)",
+    2: "Free (starter)",
+    3: "Free (unlocked after \"Pack Life\" Quest)",
+    4: "Free (unlocked after \"Pack Life\" Quest)",
+    5: "Free (unlocked after \"A Step in the Right Direction\" achievement, or 105 SC if purchased before achievement.)",
+    6: "130 SC",
+    7: "155 SC",
+    8: "180 SC",
+    9: "205 SC",
+    10: "230 SC",
+    11: "255 SC",
+    12: "280 SC",
+    13: "305 SC",
+    14: "330 SC",
+    15: "355 SC",
+    16: "380 SC",
+    17: "405 SC",
+    18: "430 SC",
+    19: "455 SC",
+    20: "480 SC",
+    21: "505 SC",
+    22: "530 SC",
+    23: "555 SC",
+    24: "580 SC",
+    25: "605 SC",
+    26: "630 SC",
+    27: "655 SC",
+    28: "680 SC",
+    29: "705 SC",
+    30: "730 SC",
+    31: "755 SC",
+    32: "780 SC",
+    33: "805 SC",
+    34: "830 SC",
+    35: "855 SC",
+    36: "880 SC",
+    37: "905 SC",
+    38: "930 SC",
+    39: "955 SC",
+    40: "980 SC",
+    41: "1005 SC",
+    42: "1030 SC",
+    43: "1055 SC",
+    44: "1080 SC",
+    45: "1105 SC",
+    46: "1130 SC",
+    47: "1155 SC",
+    48: "1180 SC",
+    49: "1205 SC",
+    50: "1230 SC",
+    51: "1255 SC",
+    52: "2 GC",
+    53: "2 GC",
+    54: "2 GC",
+    55: "2 GC",
+    56: "2 GC",
+    57: "2 GC",
+    58: "2 GC",
+    59: "2 GC",
+    60: "2 GC",
+    61: "2 GC",
+    62: "3 GC",
+    63: "3 GC",
+    64: "3 GC",
+    65: "3 GC",
+    66: "3 GC",
+    67: "3 GC",
+    68: "3 GC",
+    69: "3 GC",
+    70: "3 GC",
+    71: "3 GC",
+    72: "3 GC",
+    73: "3 GC",
+    74: "3 GC",
+    75: "3 GC",
+    76: "3 GC",
+    77: "3 GC",
+    78: "3 GC",
+    79: "3 GC",
+    80: "3 GC",
+    81: "3 GC",
+    82: "4 GC",
+    83: "4 GC",
+    84: "4 GC",
+    85: "4 GC",
+    86: "4 GC",
+    87: "4 GC",
+    88: "4 GC",
+    89: "4 GC",
+    90: "4 GC",
+    91: "4 GC",
+    92: "4 GC",
+    93: "4 GC",
+    94: "4 GC",
+    95: "4 GC",
+    96: "4 GC",
+    97: "4 GC",
+    98: "4 GC",
+    99: "4 GC",
+    100: "4 GC",
+    101: "4 GC",
+    102: "5 GC",
+    103: "5 GC",
+    104: "5 GC",
+    105: "5 GC",
+    106: "5 GC",
+    107: "5 GC",
+    108: "5 GC",
+    109: "5 GC",
+    110: "5 GC",
+    111: "5 GC",
+    112: "5 GC",
+    113: "5 GC",
+    114: "5 GC",
+    115: "5 GC",
+    116: "5 GC",
+    117: "5 GC",
+    118: "5 GC",
+    119: "5 GC",
+    120: "5 GC",
+    121: "5 GC",
+    122: "6 GC",
+    123: "6 GC",
+    124: "6 GC",
+    125: "6 GC",
+    126: "6 GC",
+    127: "6 GC",
+    128: "6 GC",
+    129: "6 GC",
+    130: "6 GC",
+    131: "6 GC",
+    132: "6 GC",
+    133: "6 GC",
+    134: "6 GC",
+    135: "6 GC",
+    136: "6 GC",
+    137: "6 GC",
+    138: "6 GC",
+    139: "6 GC",
+    140: "6 GC",
+    141: "6 GC",
+    142: "7 GC",
+    143: "7 GC",
+    144: "7 GC",
+    145: "7 GC",
+    146: "7 GC",
+    147: "7 GC",
+    148: "7 GC",
+    149: "7 GC",
+    150: "7 GC",
+    151: "7 GC",
+    152: "7 GC",
+    153: "7 GC",
+    154: "7 GC",
+    155: "7 GC",
+    156: "7 GC",
+    157: "7 GC",
+    158: "7 GC",
+    159: "7 GC",
+    160: "7 GC",
+    161: "7 GC",
+    162: "8 GC",
+    163: "8 GC",
+    164: "8 GC",
+    165: "8 GC",
+    166: "8 GC",
+    167: "8 GC",
+    168: "8 GC",
+    169: "8 GC",
+    170: "8 GC",
+    181: "8 GC",
+    182: "9 GC",
+    183: "9 GC",
+    184: "9 GC",
+    185: "9 GC",
+    186: "9 GC",
+    187: "9 GC",
+    188: "9 GC",
+    189: "9 GC",
+    190: "9 GC",
+    191: "9 GC",
+    192: "9 GC",
+    193: "9 GC",
+    194: "9 GC",
+    195: "9 GC",
+    196: "9 GC",
+    197: "9 GC",
+    198: "9 GC",
+    199: "9 GC",
+    200: "9 GC"
+}
+
 def is_dev():
     def predicate(ctx):
         return ctx.message.author.id == devID
@@ -392,11 +585,20 @@ async def personality(ctx, userInput: typing.Optional[int]):
     # TODO
     pass
     
-@lookup.command(aliases=["territory slots","territory slot","territory slot prices","territory prices"])
+@lookup.command(aliases=["territory slots","territory slot","territory slot prices","territory prices","slot prices","slot","slots"])
 async def territory(ctx, slot: typing.Optional[int]):
-    # TODO
-    pass
-    
+    if slot is None:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://i.imgur.com/ayl0eHx.jpg") as resp:
+                if resp.status != 200:
+                    return await ctx.send('Could not download file...')
+                data = io.BytesIO(await resp.read())
+                await ctx.send(file=discord.File(data, "slots_image.png"))
+    else:
+        if (slot < 1) or (slot > 200):
+            await ctx.send("Please list a slot between 1-200.")
+        else:
+            await ctx.send("Slot " + str(slot) + ": " + slotsDict[slot])
 @lookup.command(aliases=["biome stats","biome"])
 async def biomes(ctx, biome: typing.Optional[str]):
     if biome is None:
@@ -439,6 +641,12 @@ async def biomes(ctx, biome: typing.Optional[str]):
         await ctx.send(biomeName + " is *" + biomeDict[biomeDifName] + "* difficulty and uses the *" + biomeDict[biomeName] + "* stat.")
     
 @lookup.command()
+async def directory(ctx):
+    linkEmbed = discord.Embed(title="Here's a quick link to the Grouse House Directory!", url="https://www.wolvden.com/chatter/topic/258")
+    await ctx.send(embed=linkEmbed)
+    await ctx.message.delete()
+    
+@bot.command()
 async def directory(ctx):
     linkEmbed = discord.Embed(title="Here's a quick link to the Grouse House Directory!", url="https://www.wolvden.com/chatter/topic/258")
     await ctx.send(embed=linkEmbed)
