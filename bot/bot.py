@@ -664,9 +664,9 @@ async def herbs(ctx, *, herb: typing.Optional[str]):
         try:
             herbUses = herb + "_uses"
             herbBiomes = herb + "_locations"
-            await ctx.send("Used for: " + herbsDict[herbUses] + "\nFound in the following biomes: " + herbsDict[herbBiomes])
+            await ctx.send("Used for: *" + herbsDict[herbUses] + "*\nFound in the following biomes: *" + herbsDict[herbBiomes]) +"*"
         except:
-            await ctx.send("I was unable to find information about that herb.")
+            await ctx.send("I was unable to find information about that herb. :worried: Try checking your spelling.")
     
 @lookup.command(aliases=["befriend"])
 async def befriending(ctx, disposition: typing.Optional[str]):
