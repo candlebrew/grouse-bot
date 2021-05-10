@@ -368,6 +368,7 @@ async def timer(ctx, duration: typing.Optional[str], timerType: str):
 async def typeFix(ctx):
    # await db.execute('''ALTER TABLE timers ALTER COLUMN start TYPE TIMESTAMP;''')
     #await ctx.send("Fix complete.")
+    pass
 
 @dev.group()
 @is_dev()
