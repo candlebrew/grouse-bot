@@ -405,7 +405,7 @@ async def biomes(ctx, biome: typing.Optional[int]):
                 if resp.status != 200:
                     return await ctx.send('Could not download file...')
                 data = io.BytesIO(await resp.read())
-                await channel.send(file=discord.File(data, "biome_image.png"))
+                await ctx.send(file=discord.File(data, "biome_image.png"))
     elif biome in ["glacier","Glacier"]:
         biomeName = "Glacier"
     elif biome in ["tundra","Tundra"]:
