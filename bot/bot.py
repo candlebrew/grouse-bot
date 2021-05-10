@@ -133,7 +133,7 @@ async def timer_task():
     await asyncio.sleep(30)
     while True:
         timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(timezone.utc)
         emptyList = []
         if timerList != emptyList:
             for y in timerList:
@@ -350,7 +350,7 @@ async def old_timer(ctx, minutes: int):
 @is_dev()
 async def timer(ctx, duration: typing.Optional[str], timerType: str):
     user = ctx.message.author.id
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(timezone.utc)
     await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,timerType,now,duration)
     timerID = await db.fetchval('''SELECT id FROM timers WHERE start = $1;''',now)
     timersList = timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
@@ -366,8 +366,8 @@ async def timer(ctx, duration: typing.Optional[str], timerType: str):
 @set.command()
 @is_dev()
 async def typeFix(ctx):
-    await db.execute('''ALTER TABLE timers ALTER COLUMN uid TYPE BIGINT;''')
-    await ctx.send("Fix complete.")
+   # await db.execute('''ALTER TABLE timers ALTER COLUMN start TYPE TIMESTAMP;''')
+    #await ctx.send("Fix complete.")
 
 @dev.group()
 @is_dev()
