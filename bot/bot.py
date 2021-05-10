@@ -105,7 +105,7 @@ biomeDict = {
     "Swamp_Dif": "challenging",
     "Rainforest_Dif": "challenging",
     "Desert_Dif": "difficult"
-}
+    }
 
 slotsDict = {
     1: "Free (starter)",
@@ -298,7 +298,7 @@ slotsDict = {
     198: "9 GC",
     199: "9 GC",
     200: "9 GC"
-}
+    }
 
 aggressiveList = [
     "Arrogant","Bossy","Combative","Conceited","Impulsive","Malicious","Obnoxious","Sarcastic","Selfish","Vulgar"]
@@ -315,6 +315,71 @@ personalitiesList.extend(aggressiveList)
 personalitiesList.extend(friendlyList)
 personalitiesList.extend(romanticList)
 personalitiesList.extend(stoicList)
+
+herbsDict = {
+    "aloe_uses": "Rich Healing Salve and Ringworm Salve"
+    "arnica_uses": "Mange Salve"
+    "bearberry_uses": "Constipation Cure and Tapeworm Remedy"
+    "boneset_uses": "Hepatitis Cure"
+    "buffaloberry_uses": "Constipation Cure and Rich Healing Salve"
+    "burning bush_uses": "Constipation Cure and Rich Healing Salve"
+    "carrionflower_uses": "Ear Mites Ointment"
+    "cedar bark_uses": "Tick Remedy"
+    "chaparral_uses": "Antidote and Rich Healing Salve"
+    "charcoal_uses": "Diarrhea Cure, Healing Salve, and Rich Healing Salve"
+    "dandelion_uses": "Cystitis Cure, Healing Salve, and Hepatitis Cure"
+    "feverfew_uses": "Heatstroke Remedy and Infection Balm"
+    "garlic_uses": "Tapeworm Remedy and Tick Remedy"
+    "ginger_uses": "Heatstroke Remedy"
+    "goldenseal_uses": "Cough Cure and Distemper Cure"
+    "guaiacum_uses": "Distemper Cure and Influenza Cure"
+    "kava_uses": "Cough Cure and Cystitis Cure"
+    "mullein_uses": "Distemper Cure"
+    "oregano_uses": "Infection Balm, Pox Balm, and Ringworm Salve"
+    "pineapple leaf_uses": "Cough Cure and Influenza Cure"
+    "redwood sorrel_uses": "Cystitis Cure and Pox Balm"
+    "spoonwood_uses": "Hepatitis Cure"
+    "st. john's wort_uses": "Infection Balm and Open Wound Salve"
+    "st john's wort_uses": "Infection Balm and Open Wound Salve"
+    "st. johns wort_uses": "Infection Balm and Open Wound Salve"
+    "st johns wort_uses": "Infection Balm and Open Wound Salve"
+    "tansy_uses": "Tapeworm Remedy"
+    "tobacco_uses": "Ear Mites Ointment, Fleas Remedy, Mange Salve, and Tick Remedy"
+    "turmeric_uses": "Ringworm Salve"
+    "winterfat_uses": "Ear Mites Ointment, Heatstroke Remedy, and Open Wound Salve"
+    "yarrow_uses": "Mange Salve, Open Wound Salve, and Pox Balm"
+    "aloe_locations": "Desert, Swamp, and Rainforest"
+    "arnica_locations": "All locations"
+    "bearberry_locations": "Deciduous Forest, Mountains, Coniferous Forest, Taiga, and Tundra"
+    "boneset_locations": "Deciduous Forest, Grasslands, Coniferous Forest, Prairie, Riparian Woodland, Taiga, and Swamp"
+    "buffaloberry_locations": "Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga"
+    "burning bush_locations": "Deciduous Forest, Grasslands, Coniferous Forest, Prairie, and Riparian Woodland"
+    "carrionflower_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Riparian Woodland, and Taiga"
+    "cedar bark_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, Desert, Swamp, and Rainforest"
+    "chaparral_locations": "Desert"
+    "charcoal_locations": "All" 
+    "dandelion_locations": "All"
+    "feverfew_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Rainforest"
+    "garlic_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
+    "ginger_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga
+    "goldenseal_locations": "Deciduous Forest, Grasslands, Coniferous Forest, and Riparian Woodland."
+    "guaiacum_locations": "Swamp and Rainforest"
+    "kava_locations": "Rainforest"
+    "mullein_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Desert"
+    "oregano_locations": "Mountains, Prairie, Desert, Swamp, and Rainforest"
+    "pineapple leaf_locations": "Rainforest"
+    "redwood sorrel_locations": "Mountains, Coniferous Forest, and Swamp"
+    "spoonwood_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Riparian Woodland, and Swamp"
+    "st. john's wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
+    "st john's wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
+    "st. johns wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
+    "st johns wort_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp"
+    "tansy_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Desert"
+    "tobacco_locations": "Mountains, Prairie, and Desert"
+    "turmeric_locations": "Swamp and Rainforest"
+    "winterfat_locations": "Mountains, Prairie, and Desert"
+    "yarrow_locations": "All"
+    }
 
 def is_dev():
     def predicate(ctx):
@@ -587,11 +652,23 @@ async def illnesses(ctx, illness: typing.Optional[int]):
     pass
     
 @lookup.command(aliases=["herb"])
-async def herbs(ctx, herb: typing.Optional[int]):
-    # TODO
-    pass
+async def herbs(ctx, *, herb: typing.Optional[str]):
+    if herb is None:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://i.imgur.com/eSJtHvh.png") as resp:
+                if resp.status != 200:
+                    return await ctx.send('Could not download file...')
+                data = io.BytesIO(await resp.read())
+                await ctx.send(file=discord.File(data, "herbs_image.png"))
+    else:
+        try:
+            herbUses = herb + "_uses"
+            herbBiomes = herb + "_locations"
+            await ctx.send("Used for: " + herbsDict[herbUses] + "\nFound in the following biomes: " + herbsDict[herbBiomes])
+        except:
+            await ctx.send("I was unable to find information about that herb.")
     
-@lookup.command()
+@lookup.command(aliases=["befriend"])
 async def befriending(ctx, disposition: typing.Optional[str]):
     if disposition is None:
         imageURL = "https://i.imgur.com/VfxzuxG.png"
