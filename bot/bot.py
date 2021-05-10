@@ -31,7 +31,7 @@ timeMasterSQL = '''
 timerSetupSQL = '''
     CREATE TABLE IF NOT EXISTS timers (
         id SERIAL UNIQUE,
-        uid INT,
+        uid BIGINT,
         type TEXT,
         start TIMESTAMPTZ,
         duration TEXT,
@@ -361,6 +361,12 @@ async def timer(ctx, duration: typing.Optional[str], timerType: str):
     else:
         hourText = " hours "
     await ctx.send("I'll remind you in " + str(hour) + hourText + str(minutes) + " minutes!")
+    
+@set.command()
+@is_dev()
+async def typeFix(ctx):
+    await db.execute('''ALTER TABLE timers ALTER COLUMN uid TYPE BIGINT;''')
+    await ctx.send("Fix complete.")
 
 
     
