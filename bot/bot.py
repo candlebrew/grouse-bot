@@ -619,7 +619,7 @@ async def personality(ctx, userInput: typing.Optional[int]):
             elif userInput.capitalize() in stoicList:
                 disposition = "**Stoic**"
                 fightDisposition = "**Romantic**"
-            await ctx.send(userInput.capitalize() " is a " + disposition + " personality type. It will fight with " + fightDisposition + " personality types.")
+            await ctx.send(userInput.capitalize() + " is a " + disposition + " personality type. It will fight with " + fightDisposition + " personality types.")
         elif userInput.capitalize() in dispositionsList:
             if userInput.capitalize() == "Aggressive":
                 listForLoop = aggressiveList
