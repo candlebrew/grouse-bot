@@ -433,10 +433,11 @@ async def all_timers(ctx):
 @delete.command()
 @is_dev()
 async def timer(ctx, timerID: int):
-    await db.execute('''DELETE FROMT timers WHERE id = $1;''',timerID)
+    await db.execute('''DELETE FROM timers WHERE id = $1;''',timerID)
     timersList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
     timersList.remove(timerID)
     await db.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
+    await ctx.send("Timer deleted.")
     
 @dev.group()
 @is_dev()
