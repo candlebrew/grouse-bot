@@ -78,6 +78,33 @@ bot = commands.Bot(command_prefix='gh!', db=db)
 
 dayHours = [1,3,5,7,9,11,13,15,17,19,21,23]
 
+biomeDict = {
+    "Glacier": "Wisdom",
+    "Tundra": "Smarts",
+    "Tagia": "Agility",
+    "Coniferous Forest": "Smarts",
+    "Mountains": "Speed",
+    "Grasslands": "Speed",
+    "Deciduous Forest": "Speed",
+    "Riparian Woodland": "Wisdom",
+    "Prairie": "Speed",
+    "Swamp": "Agility",
+    "Rainforest": "Strength",
+    "Desert": "Strength",
+    "Glacier_Dif": "Challenging",
+    "Tundra_Dif": "Challenging",
+    "Tagia_Dif": "Difficult"
+    "Coniferous Forest_Dif": "Medium",
+    "Mountains_Dif": "Easy",
+    "Grasslands_Dif": "Easy",
+    "Deciduous Forest_Dif": "Easy",
+    "Riparian Woodland_Dif": "Medium",
+    "Prairie_Dif": "Medium",
+    "Swamp_Dif": "Challenging",
+    "Rainforest_Dif": "Challenging",
+    "Desert_Dif": "Difficult"
+}
+
 def is_dev():
     def predicate(ctx):
         return ctx.message.author.id == devID
@@ -338,6 +365,77 @@ async def medicine_error(ctx, error):
 async def forage_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         await ctx.send("You already have a foraging reminders set. :cold_sweat:")
+
+@bot.group()
+async def lookup(ctx):
+    pass
+    
+@lookup.command(aliases=["illness chart","illnesses chart"])
+async def illnesses(ctx, illness: typing.Optional[int]):
+    # TODO
+    pass
+    
+@lookup.command(aliases=["herb table","herbs table"])
+async def herbs(ctx, herb: typing.Optional[int]):
+    # TODO
+    pass
+    
+@lookup.command(aliases=["befriending chart"])
+async def befriending(ctx, userInput: typing.Optional[int]):
+    # TODO
+    pass
+    
+@lookup.command(aliases=["personalities","personalities chart","personality chart"])
+async def personality(ctx, userInput: typing.Optional[int]):
+    # TODO
+    pass
+    
+@lookup.command(aliases=["territory slots","territory slot","territory slot prices","territory prices"])
+async def territory(ctx, slot: typing.Optional[int]):
+    # TODO
+    pass
+    
+@lookup.command(aliases=["biome stats","biome"])
+async def biomes(ctx, biome: typing.Optional[int]):
+    if biome is None:
+        await ctx.send(file=discord.File("https://i.imgur.com/QZhyaVF.png"))
+    elif biome in ["glacier","Glacier"]:
+        biomeName = "Glacier"
+    elif biome in ["tundra","Tundra"]:
+        biomeName = "Tundra"
+    elif biome in ["taiga","Taiga"]:
+        biomeName = "Taiga"
+    elif biome in ["coniferous forest","Coniferous forest","coniferous Forest","Coniferous Forest","Conf","conf"]:
+        biomeName = "Coniferous Forest"
+    elif biome in ["Mountains","mountains","Mountain","mountain"]:
+        biomeName = "Mountains"
+    elif biome in ["Grasslands","grasslands","Grassland","grassland"]:
+        biomeName = "Grasslands"
+    elif biome in ["deciduous Forest","deciduous forest","Deciduous Forest","Deciduous forest","decf","dec","Dec","Decf"]:
+        biomeName = "Deciduous Forest"
+    elif biome in ["riparian woodland","Riparian Woodland","riparian Woodland","Riparian woodland","riparian","Riparian","Rip","rip","Ripw","ripw","riparian woodlands","Riparian Woodlands","riparian Woodlands","Riparian woodlands","riprarian woodland","Riprarian Woodland","riprarian Woodland","Riprarian woodland","riparian","Riprarian","riprarian woodlands","Riprarian Woodlands","riprarian Woodlands","Riprarian woodlands"]:
+        biomeName = "Riparian Woodland"
+    elif biome in ["prairie","Prairie"]:
+        biomeName = "Prairie"
+    elif biome in ["swamp","Swamp"]:
+        biomeName = "Swamp"
+    elif biome in ["rainforest","Rainforest","rain forest","Rain forest","rain Forest","Rain Forest","rainf","Rainf"]:
+        biomeName = "Rainforest"
+    elif biome in ["desert","Desert","dessert","Dessert"]:
+        biomeName = "Desert"
+    else:
+        biomeName = "Error"
+    if biomeName == "Error":
+        await ctx.send("I do not recognize biome name \"" + biome + "\".")
+    else:
+        biomeDifName = biomeName + "_Dif"
+        await ctx.send(biomeName + " is *" + biomeDict[biomeDifName] + "* difficulty and uses the *" + biomeDict[biomeName] + "* stat.")
+    
+@lookup.command()
+async def directory(ctx):
+    linkEmbed = discord.Embed(title="Here's a quick link to the Grouse House Directory!", url="https://www.wolvden.com/chatter/topic/258")
+    await ctx.send(embed=linkEmbed)
+    await ctx.message.delete()
 
 
 ## ADMIN/DEV COMMANDS -------------------------------------------------------
