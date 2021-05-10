@@ -130,8 +130,8 @@ async def season_task():
         await asyncio.sleep(300)
 
 async def timer_task():
+    await asyncio.sleep(30)
     while True:
-        await asyncio.sleep(30)
         timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
         now = datetime.datetime.now()
         emptyList = []
@@ -355,6 +355,7 @@ async def timer(ctx, duration: typing.Optional[str], timerType: str):
     timerID = await db.fetchval('''SELECT id FROM timers WHERE start = $1;''',now)
     timersList = timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
     timersList.append(timerID)
+    await db.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
     hour, minutes = map(int, duration.split("h"))
     if hour == 1:
         hourText = " hour "
