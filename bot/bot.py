@@ -131,6 +131,7 @@ async def season_task():
 
 async def timer_task():
     while True:
+        await asyncio.sleep(30)
         timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
         now = datetime.datetime.now()
         emptyList = []
