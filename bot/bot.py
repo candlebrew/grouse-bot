@@ -35,7 +35,7 @@ timerSetupSQL = '''
         type TEXT,
         start TIMESTAMPTZ,
         duration TEXT,
-        list TEXT[]
+        list INT[]
         );'''
 
 timerCheckSQL = '''
@@ -369,7 +369,23 @@ async def typeFix(ctx):
     await db.execute('''ALTER TABLE timers ALTER COLUMN uid TYPE BIGINT;''')
     await ctx.send("Fix complete.")
 
-
+@dev.group()
+@is_dev()
+async def delete(ctx):
+    pass
+    
+@delete.command()
+@is_dev()
+async def timers(ctx):
+    await db.execute('''DROP TABLE timers;''')
+    await ctx.send("Fix complete.")
+    
+@dev.group()
+@is_dev()
+async def create(ctx):
+    pass
+    
+    
     
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
