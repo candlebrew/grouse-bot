@@ -147,6 +147,9 @@ async def timer_task():
                     timerType = await db.fetchval('''SELECT type FROM timers WHERE id = $1;''',y)
                     await dm_user(user, timerType)
                     await db.execute('''DELETE FROM timers WHERE id = $1;''',y)
+                    timersList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
+                    timersList.remove(y)
+                    await db.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
         await asyncio.sleep(60)
 
 @bot.command(alisaes=["t"])
