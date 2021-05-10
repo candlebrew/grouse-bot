@@ -361,7 +361,7 @@ herbsDict = {
     "dandelion_locations": "All",
     "feverfew_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Rainforest",
     "garlic_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Swamp",
-    "ginger_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga,
+    "ginger_locations": "Deciduous Forest, Grasslands, Mountains, Coniferous Forest, Prairie, Riparian Woodland, and Taiga",
     "goldenseal_locations": "Deciduous Forest, Grasslands, Coniferous Forest, and Riparian Woodland.",
     "guaiacum_locations": "Swamp and Rainforest",
     "kava_locations": "Rainforest",
