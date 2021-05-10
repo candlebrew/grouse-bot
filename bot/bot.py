@@ -233,7 +233,15 @@ async def rescout(ctx):
     timerType = "rescout"
     duration = "1h40"
     await set_timer(user,timerType,duration)
-    await ctx.send("I'll remind you about your rescout in 1 hour 40 minutes!")
+    await ctx.send("I'll remind you about your rescout in 1 hour 40 minutes!")  
+    
+@reminder.command(aliases=["e","exploring","lead"])
+async def explore(ctx):
+    user = ctx.message.author.id
+    timerType = "energy refill"
+    duration = "1h15"
+    await set_timer(user,timerType,duration)
+    await ctx.send("I'll remind you about your energy refill in 1 hour 15 minutes!")
     
 @reminder.command(aliases=["s","scouting"])
 async def scout(ctx, type: typing.Optional[str]):
