@@ -213,60 +213,57 @@ async def dm_user(userID, type):
     
 @reminder.command(aliases=["h","hunt"])
 async def hunting(ctx):
-    user = ctx.message.author
+    user = ctx.message.author.id
+    now = datetime.datetime.now(datetime.timezone.utc)
+    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"hunt",now,"0h30")
     await ctx.send("I'll remind you about your hunt in 30 minutes!")
-    await asyncio.sleep(1800)
-    await dm_user(user,"hunt")  
     
 @reminder.command(aliases=["r","rescouting"])
 async def rescout(ctx):
-    user = ctx.message.author
-    await ctx.send("I'll remind you about your rescout in 1 hour and 40 minutes!")
-    await asyncio.sleep(6000)
-    await dm_user(user,"rescout")
+    user = ctx.message.author.id
+    now = datetime.datetime.now(datetime.timezone.utc)
+    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"rescout",now,"1h40")
+    await ctx.send("I'll remind you about your rescout in 1 hour 30 minutes!")
     
 @reminder.command(aliases=["s","scouting"])
 async def scout(ctx, type: typing.Optional[str]):
     user = ctx.message.author
     if type == "rescout":
-        await ctx.send("I'll remind you about your rescout in 1 hour and 40 minutes!")
-        await asyncio.sleep(6000)
-        await dm_user(user,"rescout")
+        user = ctx.message.author.id
+        now = datetime.datetime.now(datetime.timezone.utc)
+        await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"rescout",now,"1h40")
+        await ctx.send("I'll remind you about your rescout in 1 hour 30 minutes!")
     else:
         duration = type
         if duration is None:
-            await ctx.send("I'll remind you about your scout in 1 hour and 40 minutes!")
-            await asyncio.sleep(6000)
-            await dm_user(user,"scout")
+            user = ctx.message.author.id
+            now = datetime.datetime.now(datetime.timezone.utc)
+            await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"scout",now,"1h40")
+            await ctx.send("I'll remind you about your scout in 1 hour 30 minutes!")
         else:
             try:
                 hour, minutes = map(int, duration.split("h"))
                 if (hour > 1) or (hour >= 1 and minutes > 40):
                     await ctx.send("You can only set a reminder up to 1 hour and 40 minutes long.")
-                    await ctx.command.reset_cooldown(ctx)
                 else:
+                    user = ctx.message.author.id
+                    now = datetime.datetime.now(datetime.timezone.utc)
+                    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"scout",now,duration)
                     await ctx.send("I'll remind you about your scout in " + str(hour) + " hour and " + str(minutes) + " minutes!")
-                    waitTime = hour * 60
-                    waitTime += minutes
-                    waitTime = waitTime * 60
-                    await asyncio.sleep(waitTime)
-                    await dm_user(user,"scout")
             except:
                 await ctx.send("Please send in #h# format! Ex. `gh!scout 1h40` for 1 hour & 40 minutes.") 
-                await ctx.command.reset_cooldown(ctx)
     
 @reminder.command(aliases=["f"])
 async def forage(ctx):
-    user = ctx.message.author
+    user = ctx.message.author.id
+    now = datetime.datetime.now(datetime.timezone.utc)
+    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"forage",now,"1h00")
     await ctx.send("I'll remind you about your forage in 1 hour!")
-    await asyncio.sleep(3600)
-    await dm_user(user,"forage")
     
 @reminder.command(aliases=["m","med","mix"])
 async def medicine(ctx, duration: typing.Optional[str]):
     if duration is None:
         await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
-        await reminder.medicine.reset_cooldown(ctx)
     else:
         try:
             hour, minutes = map(int, duration.split("h"))
@@ -274,15 +271,12 @@ async def medicine(ctx, duration: typing.Optional[str]):
                 await ctx.send("You can only set a reminder up to 3 hours long.")
                 await reminder.medicine.reset_cooldown(ctx)
             else:
+                user = ctx.message.author.id
+                now = datetime.datetime.now(datetime.timezone.utc)
+                await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"medicine",now,duration)
                 await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
-                waitTime = hour * 60
-                waitTime += minutes
-                waitTime = waitTime * 60
-                await asyncio.sleep(waitTime)
-                await dm_user(user,"medicine")
         except:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
-            await reminder.medicine.reset_cooldown(ctx)
 
 @hunting.error
 async def hunt_error(ctx, error):
