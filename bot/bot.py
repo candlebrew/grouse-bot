@@ -28,6 +28,24 @@ timeMasterSQL = '''
     INSERT INTO master_table (id,season,day,year,day_check) VALUES ('00MASTER00','Spring',4,5,4);
     '''
 
+timerSetupSQL = '''
+    CREATE TABLE IF NOT EXISTS timers (
+        id SERIAL UNIQUE,
+        uid INT,
+        type TEXT,
+        start TIMESTAMPTZ,
+        duration TEXT,
+        list TEXT[]
+        );'''
+
+timerCheckSQL = '''
+    SELECT id FROM timers WHERE type = '00MASTER00';
+    '''
+    
+timerMasterSQL = '''
+    INSERT INTO timers (id,type,list) VALUES (0,'00MASTER00',$1);
+    '''
+ 
 ## Connecting the DB ----------------------------------------------------------
 async def run():
     global db
@@ -36,10 +54,16 @@ async def run():
     db = await asyncpg.connect(dsn=dbURL, ssl='require')
     
     await db.execute(masterSetupSQL)
+    await db.execute(timerSetupSQL)
+    
+    emptyList = []
     
     timeCheck = await db.fetchval(timeCheckSQL)
     if timeCheck is None:
         await db.execute(timeMasterSQL)
+    timerCheck = await db.fetchval(timerCheckSQL)
+    if timerCheck is None:
+        await db.execute(timerMasterSQL,emptyList)
     
 ## Bot Setup ----------------------------------------------------------
     
@@ -104,6 +128,25 @@ async def season_task():
                     await seasonChannel.edit(reason=None,name=newName)
         await asyncio.sleep(300)
 
+async def timer_task():
+    while True:
+        timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
+        now = datetime.datetime.now()
+        emptyList = []
+        if timerList != emptyList:
+            for y in timerList:
+                startTime = await db.fetchval('''SELECT start FROM timers WHERE id = $1;''',y)
+                duration = await db.fetchval('''SELECT duration FROM timers WHERE id = $1;''',y)
+                hour, minutes = map(int, duration.split("h"))
+                durationDelta = datetime.timedelta(hours=hour,minutes=minutes)
+                timePassed = now - startTime
+                if timePassed >= durationDelta:
+                    user = await db.fetchval('''SELECT uid FROM timers WHERE id = $1;''',y)
+                    timerType = await db.fetchval('''SELECT type FROM timers WHERE id = $1;''',y)
+                    await dm_user(user, timerType)
+                    await db.execute('''DELETE FROM timers WHERE id = $1;''',y)
+        await asyncio.sleep(60)
+
 @bot.command(alisaes=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
     now = datetime.datetime.now()
@@ -147,7 +190,8 @@ async def time(ctx, timeType: typing.Optional[str]):
 async def reminder(ctx):
     pass
     
-async def dm_user(user, type):
+async def dm_user(userID, type):
+    user = await bot.fetch_user(userID)
     userDM = user.dm_channel
     mention = user.mention
     if userDM is None:
@@ -168,6 +212,13 @@ async def hunting(ctx):
     await ctx.send("I'll remind you about your hunt in 30 minutes!")
     await asyncio.sleep(1800)
     await dm_user(user,"hunt")  
+    
+@reminder.command(aliases=["r","rescouting"])
+async def rescout(ctx):
+    user = ctx.message.author
+    await ctx.send("I'll remind you about your rescout in 1 hour and 40 minutes!")
+    await asyncio.sleep(6000)
+    await dm_user(user,"rescout")
     
 @reminder.command(aliases=["s","scouting"])
 async def scout(ctx, type: typing.Optional[str]):
@@ -286,12 +337,28 @@ async def daycheck(ctx):
     
 @test.command()
 @is_dev()
-async def timer(ctx, minutes: int):
+async def old_timer(ctx, minutes: int):
     user = ctx.message.author
     mention = ctx.message.author.mention
     seconds = minutes * 60
     await ctx.send("I'll remind you in " + str(minutes) + " minutes!")
     await asyncio.sleep(seconds)
+    
+@test.command()
+@is_dev()
+async def timer(ctx, duration: typing.Optional[str], timerType: str):
+    user = ctx.message.author.id
+    now = datetime.datetime.now()
+    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,timerType,now,duration)
+    timerID = await db.fetchval('''SELECT id FROM timers WHERE start = $1;''',now)
+    timersList = timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
+    timersList.append(timerID)
+    hour, minutes = map(int, duration.split("h"))
+    if hour == 1:
+        hourText = " hour "
+    else:
+        hourText = " hours "
+    await ctx.send("I'll remind you in " + str(hour) + hourText + str(minutes) + " minutes!")
 
 
     
