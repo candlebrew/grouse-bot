@@ -219,9 +219,9 @@ async def set_timer(userID,timerType,duration):
     except:
         name = "error"
     try:
-        grouseGuild = bot.fetch_guild(grouseID)
+        grouseGuild = bot.get_guild(grouseID)
         guildMember = await grouseGuild.fetch_member(userID)
-        displayName = guildMember.nick
+        displayName = guildMember.display_name
     except:
         displayName = "error"
     fullName = name + " | " + str(displayName)
@@ -381,9 +381,9 @@ async def id(ctx, userID: int):
     user = await bot.fetch_user(userID)
     name = user.name
     await ctx.send(name)
-    grouseGuild = bot.fetch_guild(grouseID)
+    grouseGuild = bot.get_guild(grouseID)
     guildMember = await grouseGuild.fetch_member(userID)
-    displayName = guildMember.nick
+    displayName = guildMember.display_name
     await ctx.send(str(displayName))
     
 @test.command()
