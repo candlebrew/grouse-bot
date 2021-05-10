@@ -648,7 +648,7 @@ async def lookup(ctx):
     
 @lookup.command(aliases=["illness"])
 async def illnesses(ctx, illness: typing.Optional[str]):
-    if herb is None:
+    if illness is None:
         async with aiohttp.ClientSession() as session:
             async with session.get("https://i.imgur.com/QJ0hX8q.png") as resp:
                 if resp.status != 200:
