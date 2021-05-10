@@ -94,7 +94,7 @@ biomeDict = {
     "Rainforest": "Strength",
     "Desert": "Strength",
     "Glacier_Dif": "challenging",
-    "Tundra_Dif": "Cchallenging",
+    "Tundra_Dif": "challenging",
     "Taiga_Dif": "difficult",
     "Coniferous Forest_Dif": "medium",
     "Mountains_Dif": "easy",
