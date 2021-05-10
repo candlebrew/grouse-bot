@@ -647,9 +647,16 @@ async def lookup(ctx):
     pass
     
 @lookup.command(aliases=["illness"])
-async def illnesses(ctx, illness: typing.Optional[int]):
-    # TODO
-    pass
+async def illnesses(ctx, illness: typing.Optional[str]):
+    if herb is None:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://i.imgur.com/QJ0hX8q.png") as resp:
+                if resp.status != 200:
+                    return await ctx.send('Could not download file...')
+                data = io.BytesIO(await resp.read())
+                await ctx.send(file=discord.File(data, "illnesses_image.png"))
+    else:
+        await ctx.send("This feature is a work-in-progress :worried: Sorry!")
     
 @lookup.command(aliases=["herb"])
 async def herbs(ctx, *, herb: typing.Optional[str]):
