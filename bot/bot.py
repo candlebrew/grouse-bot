@@ -398,7 +398,7 @@ async def territory(ctx, slot: typing.Optional[int]):
     pass
     
 @lookup.command(aliases=["biome stats","biome"])
-async def biomes(ctx, biome: typing.Optional[int]):
+async def biomes(ctx, biome: typing.Optional[str]):
     if biome is None:
         async with aiohttp.ClientSession() as session:
             async with session.get("https://i.imgur.com/QZhyaVF.png") as resp:
