@@ -6,6 +6,8 @@ import typing
 import os
 import asyncio
 import asyncpg
+import io
+import aiohttp
 
 ## https://discord.com/api/oauth2/authorize?client_id=838960211187859508&permissions=257104&scope=bot
 
@@ -398,7 +400,12 @@ async def territory(ctx, slot: typing.Optional[int]):
 @lookup.command(aliases=["biome stats","biome"])
 async def biomes(ctx, biome: typing.Optional[int]):
     if biome is None:
-        await ctx.send(file=discord.File("https://i.imgur.com/QZhyaVF.png"))
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://i.imgur.com/QZhyaVF.png") as resp:
+                if resp.status != 200:
+                    return await channel.send('Could not download file...')
+                data = io.BytesIO(await resp.read())
+                await channel.send(file=discord.File(data, "biome_image.png"))
     elif biome in ["glacier","Glacier"]:
         biomeName = "Glacier"
     elif biome in ["tundra","Tundra"]:
