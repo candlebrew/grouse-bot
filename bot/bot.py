@@ -213,8 +213,20 @@ async def dm_user(userID, type):
             await ctx.send(mention + " Your " + type + " is finished!")
     
 async def set_timer(userID,timerType,duration):
+    try:
+        user = await bot.fetch_user(userID)
+        name = user.name
+    except:
+        name = "error"
+    try:
+        grouseGuild = bot.fetch_guild(grouseID)
+        guildMember = await grouseGuild.fetch_member(userID)
+        displayName = guildMember.nick
+    except:
+        displayName = "error"
+    fullName = name + " | " + str(displayName))
     now = datetime.datetime.now(datetime.timezone.utc)
-    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',userID,timerType,now,duration)
+    await db.execute('''INSERT INTO timers (uid,username,type,start,duration) VALUES ($1,$2,$3,$4,$5);''',userID,fullName,timerType,now,duration)
     timerID = await db.fetchval('''SELECT id FROM timers WHERE start = $1;''',now)
     timersList = timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
     timersList.append(timerID)
@@ -423,6 +435,11 @@ async def timers(ctx):
 async def create(ctx):
     pass
     
+    
+@create.command()
+@is_dev()
+async def column(ctx):
+    await db.execute('''ALTER TABLE timers ADD COLUMN username TEXT;''')
     
     
 ## Bot Setup & Activation ----------------------------------------------------------
