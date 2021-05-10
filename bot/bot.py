@@ -81,7 +81,7 @@ dayHours = [1,3,5,7,9,11,13,15,17,19,21,23]
 biomeDict = {
     "Glacier": "Wisdom",
     "Tundra": "Smarts",
-    "Tagia": "Agility",
+    "Taiga": "Agility",
     "Coniferous Forest": "Smarts",
     "Mountains": "Speed",
     "Grasslands": "Speed",
@@ -91,18 +91,18 @@ biomeDict = {
     "Swamp": "Agility",
     "Rainforest": "Strength",
     "Desert": "Strength",
-    "Glacier_Dif": "Challenging",
-    "Tundra_Dif": "Challenging",
-    "Tagia_Dif": "Difficult"
-    "Coniferous Forest_Dif": "Medium",
-    "Mountains_Dif": "Easy",
-    "Grasslands_Dif": "Easy",
-    "Deciduous Forest_Dif": "Easy",
-    "Riparian Woodland_Dif": "Medium",
-    "Prairie_Dif": "Medium",
-    "Swamp_Dif": "Challenging",
-    "Rainforest_Dif": "Challenging",
-    "Desert_Dif": "Difficult"
+    "Glacier_Dif": "challenging",
+    "Tundra_Dif": "Cchallenging",
+    "Taiga_Dif": "difficult",
+    "Coniferous Forest_Dif": "medium",
+    "Mountains_Dif": "easy",
+    "Grasslands_Dif": "easy",
+    "Deciduous Forest_Dif": "easy",
+    "Riparian Woodland_Dif": "medium",
+    "Prairie_Dif": "medium",
+    "Swamp_Dif": "challenging",
+    "Rainforest_Dif": "challenging",
+    "Desert_Dif": "difficult"
 }
 
 def is_dev():
