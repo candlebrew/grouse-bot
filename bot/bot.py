@@ -604,7 +604,7 @@ async def personality(ctx, userInput: typing.Optional[int]):
                 if resp.status != 200:
                     return await ctx.send('Could not download file...')
                 data = io.BytesIO(await resp.read())
-                await ctx.send(file=discord.File(data, "slots_image.png"))
+                await ctx.send(file=discord.File(data, "personalities_image.png"))
     else:
         if userInput.capitalize() in personalitiesList:
             if userInput.capitalize() in aggressiveList:
@@ -635,7 +635,7 @@ async def personality(ctx, userInput: typing.Optional[int]):
                 fightDisposition = "**Romantic**"
             message = userInput.capitalize() + " fights with " + fightDisposition + " personalities.\n" + userInput.capitalize() + " personalities are: "
             for i in listForLoop:
-                if i is not in ["Vulgar","Sociable","Trusting","Unfriendly"]:
+                if i not in ["Vulgar","Sociable","Trusting","Unfriendly"]:
                     message += i + ", "
                 else:
                     message += "and " + i
