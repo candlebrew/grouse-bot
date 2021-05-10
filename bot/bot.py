@@ -597,7 +597,7 @@ async def befriending(ctx, userInput: typing.Optional[int]):
     pass
     
 @lookup.command(aliases=["personalities"])
-async def personality(ctx, userInput: typing.Optional[int]):
+async def personality(ctx, userInput: typing.Optional[str]):
     if userInput is None:
         async with aiohttp.ClientSession() as session:
             async with session.get("https://i.imgur.com/ewtlsRM.png") as resp:
