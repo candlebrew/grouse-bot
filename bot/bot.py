@@ -633,12 +633,12 @@ async def personality(ctx, userInput: typing.Optional[str]):
             elif userInput.capitalize() == "Stoic":
                 listForLoop = stoicList
                 fightDisposition = "**Romantic**"
-            message = userInput.capitalize() + " fights with " + fightDisposition + " personalities.\n" + userInput.capitalize() + " personalities are: "
+            message = "**" + userInput.capitalize() + "** fights with " + fightDisposition + " personalities.\n" + "*"
             for i in listForLoop:
                 if i not in ["Vulgar","Sociable","Trusting","Unfriendly"]:
                     message += i + ", "
                 else:
-                    message += "and " + i
+                    message += i + "*"
             await ctx.send(message)
         else:
             await ctx.send("I do not recognize " + userInput + " as a valid personality or disposition.")
