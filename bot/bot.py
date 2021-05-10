@@ -224,7 +224,7 @@ async def set_timer(userID,timerType,duration):
         displayName = guildMember.nick
     except:
         displayName = "error"
-    fullName = name + " | " + str(displayName))
+    fullName = name + " | " + str(displayName)
     now = datetime.datetime.now(datetime.timezone.utc)
     await db.execute('''INSERT INTO timers (uid,username,type,start,duration) VALUES ($1,$2,$3,$4,$5);''',userID,fullName,timerType,now,duration)
     timerID = await db.fetchval('''SELECT id FROM timers WHERE start = $1;''',now)
