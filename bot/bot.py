@@ -403,7 +403,7 @@ async def biomes(ctx, biome: typing.Optional[int]):
         async with aiohttp.ClientSession() as session:
             async with session.get("https://i.imgur.com/QZhyaVF.png") as resp:
                 if resp.status != 200:
-                    return await channel.send('Could not download file...')
+                    return await ctx.send('Could not download file...')
                 data = io.BytesIO(await resp.read())
                 await channel.send(file=discord.File(data, "biome_image.png"))
     elif biome in ["glacier","Glacier"]:
