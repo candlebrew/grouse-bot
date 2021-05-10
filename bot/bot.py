@@ -211,6 +211,14 @@ async def dm_user(userID, type):
         except: # not allowed, send in ctx
             await ctx.send(mention + " Your " + type + " is finished!")
     
+async def set_timer(userID,timerType,duration):
+    now = datetime.datetime.now(datetime.timezone.utc)
+    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',userID,timerType,now,duration)
+    timerID = await db.fetchval('''SELECT id FROM timers WHERE start = $1;''',now)
+    timersList = timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
+    timersList.append(timerID)
+    await db.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
+    
 @reminder.command(aliases=["h","hunt"])
 async def hunting(ctx):
     user = ctx.message.author.id
@@ -221,25 +229,28 @@ async def hunting(ctx):
 @reminder.command(aliases=["r","rescouting"])
 async def rescout(ctx):
     user = ctx.message.author.id
-    now = datetime.datetime.now(datetime.timezone.utc)
-    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"rescout",now,"1h40")
-    await ctx.send("I'll remind you about your rescout in 1 hour 30 minutes!")
+    timerType = "rescout"
+    duration = "1h40"
+    await set_timer(user,timerType,duration)
+    await ctx.send("I'll remind you about your rescout in 1 hour 40 minutes!")
     
 @reminder.command(aliases=["s","scouting"])
 async def scout(ctx, type: typing.Optional[str]):
     user = ctx.message.author
     if type == "rescout":
         user = ctx.message.author.id
-        now = datetime.datetime.now(datetime.timezone.utc)
-        await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"rescout",now,"1h40")
-        await ctx.send("I'll remind you about your rescout in 1 hour 30 minutes!")
+        timerType = "rescout"
+        duration = "1h40"
+        await set_timer(user,timerType,duration)
+        await ctx.send("I'll remind you about your rescout in 1 hour 40 minutes!")
     else:
         duration = type
         if duration is None:
             user = ctx.message.author.id
-            now = datetime.datetime.now(datetime.timezone.utc)
-            await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"scout",now,"1h40")
-            await ctx.send("I'll remind you about your scout in 1 hour 30 minutes!")
+            timerType = "scout"
+            duration = "1h40"
+            await set_timer(user,timerType,duration)
+            await ctx.send("I'll remind you about your scout in 1 hour 40 minutes!")
         else:
             try:
                 hour, minutes = map(int, duration.split("h"))
@@ -247,17 +258,22 @@ async def scout(ctx, type: typing.Optional[str]):
                     await ctx.send("You can only set a reminder up to 1 hour and 40 minutes long.")
                 else:
                     user = ctx.message.author.id
-                    now = datetime.datetime.now(datetime.timezone.utc)
-                    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"scout",now,duration)
-                    await ctx.send("I'll remind you about your scout in " + str(hour) + " hour and " + str(minutes) + " minutes!")
+                    timerType = "scout"
+                    await set_timer(user,timerType,duration)
+                    if hour == 1:
+                        hoursText = " hour "
+                    else:
+                        hoursText = " hours "
+                    await ctx.send("I'll remind you about your scout in " + str(hour) + hoursText + str(minutes) + " minutes!")
             except:
                 await ctx.send("Please send in #h# format! Ex. `gh!scout 1h40` for 1 hour & 40 minutes.") 
     
 @reminder.command(aliases=["f"])
 async def forage(ctx):
     user = ctx.message.author.id
-    now = datetime.datetime.now(datetime.timezone.utc)
-    await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"forage",now,"1h00")
+    timerType = "forage"
+    duration = "1h00"
+    await set_timer(user,timerType,duration)
     await ctx.send("I'll remind you about your forage in 1 hour!")
     
 @reminder.command(aliases=["m","med","mix"])
@@ -269,12 +285,15 @@ async def medicine(ctx, duration: typing.Optional[str]):
             hour, minutes = map(int, duration.split("h"))
             if hour > 3:
                 await ctx.send("You can only set a reminder up to 3 hours long.")
-                await reminder.medicine.reset_cooldown(ctx)
             else:
                 user = ctx.message.author.id
-                now = datetime.datetime.now(datetime.timezone.utc)
-                await db.execute('''INSERT INTO timers (uid,type,start,duration) VALUES ($1,$2,$3,$4);''',user,"medicine",now,duration)
-                await ctx.send("I'll remind you about your medicine in " + str(hour) + " hour and " + str(minutes) + " minutes!")
+                timerType = "medicine"
+                await set_timer(user,timerType,duration)
+                if hour == 1:
+                    hoursText = " hour "
+                else:
+                    hoursText = " hours "
+                await ctx.send("I'll remind you about your medicine in " + str(hour) + hoursText + str(minutes) + " minutes!")
         except:
             await ctx.send("Please input the time as #h#. Eg. `gh!timer medicine 1h40` for 1 hour & 40 minutes.")
 
