@@ -592,9 +592,34 @@ async def herbs(ctx, herb: typing.Optional[int]):
     pass
     
 @lookup.command()
-async def befriending(ctx, userInput: typing.Optional[int]):
-    # TODO
-    pass
+async def befriending(ctx, disposition: typing.Optional[str]):
+    if disposition is None:
+        imageURL = "https://i.imgur.com/VfxzuxG.png"
+        imageName = "befriending_image.png"
+    else:
+        if disposition in ["Aggressive","aggressive"]:
+            imageURL = "https://i.imgur.com/qFIP743.png"
+            imageName = "befriending_aggressive_image.png"
+        elif disposition in ["Friendly","friendly"]:
+            imageURL = "https://i.imgur.com/U3CGvIU.png"
+            imageName = "befriending_friendly_image.png"
+        elif disposition in ["Romantic","romantic"]:
+            imageURL = "https://i.imgur.com/orjiyC9.png"
+            imageName = "befriending_romantic_image.png"
+        elif disposition in ["Stoic","stoic"]:
+            imageURL = "https://i.imgur.com/e6CFl5m.png"
+            imageName = "befriending_stoic_image.png"
+        else:
+            imageName = "Error"
+    if imageName == "Error":
+            await ctx.send("I do not recognize " + disposition + " as a valid disposition.")
+    else:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(imageURL) as resp:
+                if resp.status != 200:
+                    return await ctx.send('Could not download file...')
+                data = io.BytesIO(await resp.read())
+                await ctx.send(file=discord.File(data, imageName))
     
 @lookup.command(aliases=["personalities"])
 async def personality(ctx, userInput: typing.Optional[str]):
