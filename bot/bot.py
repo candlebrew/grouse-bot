@@ -300,6 +300,22 @@ slotsDict = {
     200: "9 GC"
 }
 
+aggressiveList = [
+    "Arrogant","Bossy","Combative","Conceited","Impulsive","Malicious","Obnoxious","Sarcastic","Selfish","Vulgar"]
+friendlyList = [
+    "Adventurous","Amiable","Fair","Helpful","Humble","Lazy","Observant","Optimistic","Scatterbrained","Sociable"]
+romanticList = [
+    "Capable","Charming","Confident","Dedicated","Dutiful","Imaginative","Keen","Precise","Reliable","Trusting"]
+stoicList = [
+    "Aloof","Anxious","Dishonest","Independent","Neutral","Pessimistic","Quiet","Sneaky","Sullen","Unfriendly"]
+dispositionsList = [
+    "Aggressive","Friendly","Romantic","Stoic"]
+personalitiesList = []
+personalitiesList.extend(aggressiveList)
+personalitiesList.extend(friendlyList)
+personalitiesList.extend(romanticList)
+personalitiesList.extend(stoicList)
+
 def is_dev():
     def predicate(ctx):
         return ctx.message.author.id == devID
@@ -565,27 +581,69 @@ async def forage_error(ctx, error):
 async def lookup(ctx):
     pass
     
-@lookup.command(aliases=["illness chart","illnesses chart"])
+@lookup.command(aliases=["illness"])
 async def illnesses(ctx, illness: typing.Optional[int]):
     # TODO
     pass
     
-@lookup.command(aliases=["herb table","herbs table"])
+@lookup.command(aliases=["herb"])
 async def herbs(ctx, herb: typing.Optional[int]):
     # TODO
     pass
     
-@lookup.command(aliases=["befriending chart"])
+@lookup.command()
 async def befriending(ctx, userInput: typing.Optional[int]):
     # TODO
     pass
     
-@lookup.command(aliases=["personalities","personalities chart","personality chart"])
+@lookup.command(aliases=["personalities"])
 async def personality(ctx, userInput: typing.Optional[int]):
-    # TODO
-    pass
+    if userInput is None:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://i.imgur.com/ewtlsRM.png") as resp:
+                if resp.status != 200:
+                    return await ctx.send('Could not download file...')
+                data = io.BytesIO(await resp.read())
+                await ctx.send(file=discord.File(data, "slots_image.png"))
+    else:
+        if userInput.capitalize() in personalitiesList:
+            if userInput.capitalize() in aggressiveList:
+                disposition = "**Aggressive**"
+                fightDisposition = "**Friendly**"
+            elif userInput.capitalize() in friendlyList:
+                disposition = "**Friendly**"
+                fightDisposition = "**Aggressive**"
+            elif userInput.capitalize() in romanticList:
+                disposition = "**Romantic**"
+                fightDisposition = "**Stoic**"
+            elif userInput.capitalize() in stoicList:
+                disposition = "**Stoic**"
+                fightDisposition = "**Romantic**"
+            await ctx.send(userInput.capitalize() " is a " + disposition + " personality type. It will fight with " + fightDisposition + " personality types.")
+        elif userInput.capitalize() in dispositionsList:
+            if userInput.capitalize() == "Aggressive":
+                listForLoop = aggressiveList
+                fightDisposition = "**Friendly**"
+            elif userInput.capitalize() == "Friendly":
+                listForLoop = friendlyList
+                fightDisposition = "**Aggressive**"
+            elif userInput.capitalize() == "Romantic":
+                listForLoop = romanticList
+                fightDisposition = "**Stoic**"
+            elif userInput.capitalize() == "Stoic":
+                listForLoop = stoicList
+                fightDisposition = "**Romantic**"
+            message = userInput.capitalize() + " fights with " + fightDisposition + " personalities.\n" + userInput.capitalize() + " personalities are: "
+            for i in listForLoop:
+                if i is not in ["Vulgar","Sociable","Trusting","Unfriendly"]:
+                    message += i + ", "
+                else:
+                    message += "and " + i
+            await ctx.send(message)
+        else:
+            await ctx.send("I do not recognize " + userInput + " as a valid personality or disposition.")
     
-@lookup.command(aliases=["territory slots","territory slot","territory slot prices","territory prices","slot prices","slot","slots"])
+@lookup.command(aliases=["slot","slots"])
 async def territory(ctx, slot: typing.Optional[int]):
     if slot is None:
         async with aiohttp.ClientSession() as session:
@@ -599,7 +657,8 @@ async def territory(ctx, slot: typing.Optional[int]):
             await ctx.send("Please list a slot between 1-200.")
         else:
             await ctx.send("Slot " + str(slot) + ": " + slotsDict[slot])
-@lookup.command(aliases=["biome stats","biome"])
+
+@lookup.command(aliases=["biome"])
 async def biomes(ctx, biome: typing.Optional[str]):
     if biome is None:
         async with aiohttp.ClientSession() as session:
