@@ -12,6 +12,7 @@ import aiohttp
 ## https://discord.com/api/oauth2/authorize?client_id=838960211187859508&permissions=257104&scope=bot
 
 db = None
+db2 = None
 
 masterSetupSQL = '''
     CREATE TABLE IF NOT EXISTS master_table (
@@ -54,6 +55,11 @@ async def run():
     
     dbURL = os.environ.get('DATABASE_URL')
     db = await asyncpg.connect(dsn=dbURL, ssl='require')
+    
+    #second connection to allow multiple tasks to run in bg
+    global db2
+    
+    db2 = await asyncpg.connect(dsn=dbURL, ssl='require')
     
     await db.execute(masterSetupSQL)
     await db.execute(timerSetupSQL)
@@ -436,24 +442,24 @@ async def season_task():
 async def timer_task():
     while True:
         await asyncio.sleep(90)
-        timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
+        timerList = await db2.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
         now = datetime.datetime.now(datetime.timezone.utc)
         emptyList = []
         if timerList != emptyList:
             for y in timerList:
-                startTime = await db.fetchval('''SELECT start FROM timers WHERE id = $1;''',y)
-                duration = await db.fetchval('''SELECT duration FROM timers WHERE id = $1;''',y)
+                startTime = await db2.fetchval('''SELECT start FROM timers WHERE id = $1;''',y)
+                duration = await db2.fetchval('''SELECT duration FROM timers WHERE id = $1;''',y)
                 hour, minutes = map(int, duration.split("h"))
                 durationDelta = datetime.timedelta(hours=hour,minutes=minutes)
                 timePassed = now - startTime
                 if timePassed >= durationDelta:
-                    user = await db.fetchval('''SELECT uid FROM timers WHERE id = $1;''',y)
-                    timerType = await db.fetchval('''SELECT type FROM timers WHERE id = $1;''',y)
+                    user = await db2.fetchval('''SELECT uid FROM timers WHERE id = $1;''',y)
+                    timerType = await db2.fetchval('''SELECT type FROM timers WHERE id = $1;''',y)
                     await dm_user(user, timerType)
-                    await db.execute('''DELETE FROM timers WHERE id = $1;''',y)
-                    timersList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
+                    await db2.execute('''DELETE FROM timers WHERE id = $1;''',y)
+                    timersList = await db2.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
                     timersList.remove(y)
-                    await db.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
+                    await db2.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
 
 @bot.command(alisaes=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
