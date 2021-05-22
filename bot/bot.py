@@ -930,6 +930,15 @@ async def create(ctx):
 async def column(ctx):
     await db.execute('''ALTER TABLE timers ADD COLUMN username TEXT;''')
     
+@dev.group()
+async def refresh(ctx):
+    pass
+
+@refresh.command()
+@is_dev()
+async def timers(ctx):
+    bot.loop.create_task(timer_task())
+    await ctx.send("Timer task refreshed.")
     
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
