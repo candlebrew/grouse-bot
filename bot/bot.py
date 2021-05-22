@@ -434,8 +434,8 @@ async def season_task():
         await asyncio.sleep(300)
 
 async def timer_task():
-    await asyncio.sleep(30)
     while True:
+        await asyncio.sleep(90)
         timerList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
         now = datetime.datetime.now(datetime.timezone.utc)
         emptyList = []
@@ -454,7 +454,6 @@ async def timer_task():
                     timersList = await db.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
                     timersList.remove(y)
                     await db.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
-        await asyncio.sleep(60)
 
 @bot.command(alisaes=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
