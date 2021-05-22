@@ -521,6 +521,7 @@ async def dm_user(userID, type):
             await ctx.send(mention + " Your " + type + " is finished!")
     
 async def set_timer(userID,timerType,duration):
+    duration = "0" + duration + "0"
     try:
         user = await bot.fetch_user(userID)
         name = user.name
