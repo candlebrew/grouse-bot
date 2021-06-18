@@ -77,6 +77,7 @@ async def run():
     
 token = os.environ.get('DISCORD_BOT_TOKEN')
 devID = int(os.environ.get('DEV_ID'))
+devEmail = os.environ.get('DEV_EMAIL')
 testID = int(os.environ.get('TEST_CHANNEL'))
 seasonID = int(os.environ.get('GH_DATE_CHANNEL'))
 grouseID = int(os.environ.get('GH_GUILD'))
@@ -486,7 +487,7 @@ async def time(ctx, timeType: typing.Optional[str]):
         pass
     if timeType in ["r","rollover"]:
         minutesLeft = 60 - now.minute
-        hoursLeft = 25 - now.hour
+        hoursLeft = 23 - now.hour
         await ctx.send("**" + str(hoursLeft) + " hours " + str(minutesLeft) + " minutes** until rollover.")
     if timeType in ["season","s","year","y","date"]:
         ## TODO current wd day/time
@@ -945,6 +946,11 @@ async def refresh(ctx):
 async def timers(ctx):
     bot.loop.create_task(timer_task())
     await ctx.send("Timer task refreshed.")
+    
+@dev.command()
+@is_dev()
+async def email(ctx):
+    await ctx.send("Email is "+devEmail)
     
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
