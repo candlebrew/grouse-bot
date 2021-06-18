@@ -486,7 +486,7 @@ async def time(ctx, timeType: typing.Optional[str]):
         pass
     if timeType in ["r","rollover"]:
         minutesLeft = 60 - now.minute
-        hoursLeft = 24 - now.hour
+        hoursLeft = 25 - now.hour
         await ctx.send("**" + str(hoursLeft) + " hours " + str(minutesLeft) + " minutes** until rollover.")
     if timeType in ["season","s","year","y","date"]:
         ## TODO current wd day/time
