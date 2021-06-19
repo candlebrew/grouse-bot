@@ -549,7 +549,7 @@ async def hunting(ctx):
     await set_timer(user,timerType,duration)
     await ctx.send("I'll remind you about your hunt in 30 minutes!")
     
-@reminder.command(aliases=["f","fish"])
+@reminder.command(aliases=["fish"])
 async def fishing(ctx):
     user = ctx.message.author.id
     timerType = "fishing"
