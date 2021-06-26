@@ -577,7 +577,7 @@ async def explore(ctx):
 async def lunar(ctx, timeType: typing.Optional[str]):
     user = ctx.message.author.id
     now = datetime.datetime.now()
-    timerType = "lunar event"
+    timerType = "lunar event reminder"
     minLeft = 60 - now.minute
     currentHour = now.hour
     if timeType is None:
