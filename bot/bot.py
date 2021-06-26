@@ -577,7 +577,7 @@ async def explore(ctx):
 async def lunar(ctx):
     user = ctx.message.author.id
     now = datetime.datetime.now()
-    minLeft = 60 - now.minutes
+    minLeft = 60 - now.minute
     timerType = "lunar event"
     duration = "0h" + str(minLeft)
     await set_timer(user,timerType,duration)
