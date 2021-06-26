@@ -574,14 +574,34 @@ async def explore(ctx):
     await ctx.send("I'll remind you about your energy refill in 1 hour 15 minutes!")
     
 @reminder.command()
-async def lunar(ctx):
+async def lunar(ctx, timeType: typing.Optional[str]):
     user = ctx.message.author.id
     now = datetime.datetime.now()
-    minLeft = 60 - now.minute
     timerType = "lunar event"
-    duration = "0h" + str(minLeft)
-    await set_timer(user,timerType,duration)
-    await ctx.send(f"I'll remind you about the lunar event in {minLeft} minutes!")
+    minLeft = 60 - now.minute
+    currentHour = now.hour
+    if timeType is None:
+        hoursLeft = 0
+    elif timeType in ["day","Day"]:
+        if currentHour in dayHours:
+            hoursLeft = 1
+        else:
+            hoursLeft = 0
+    elif timeType in ["night","Night"]:
+        if currentHour in dayHours:
+            hoursLeft = 0
+        else:
+            hoursLeft = 1
+    else:
+        await ctx.send(f"I don't recognize {timeType} as a valid type.")
+    if timeType in [None,"day","Day","night","Night"]:
+        if hoursLeft == 0:
+            hourText = ""
+        else:
+            hourText = "1 hour "
+        duration = f"{hoursLeft}h{minLeft}"
+        await set_timer(user,timerType,duration)
+        await ctx.send(f"I'll remind you about the lunar event in {hourText}{minLeft} minutes!")
     
 @reminder.command(aliases=["s","scouting"])
 async def scout(ctx, type: typing.Optional[str]):
