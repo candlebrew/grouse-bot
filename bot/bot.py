@@ -573,6 +573,16 @@ async def explore(ctx):
     await set_timer(user,timerType,duration)
     await ctx.send("I'll remind you about your energy refill in 1 hour 15 minutes!")
     
+@reminder.command()
+async def lunar(ctx):
+    user = ctx.message.author.id
+    now = datetime.datetime.now()
+    minLeft = 60 - now.minutes
+    timerType = "lunar event"
+    duration = "0h" + str(minLeft)
+    await set_timer(user,timerType,duration)
+    await ctx.send(f"I'll remind you about the lunar event in {minLeft} minutes!")
+    
 @reminder.command(aliases=["s","scouting"])
 async def scout(ctx, type: typing.Optional[str]):
     user = ctx.message.author
