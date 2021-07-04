@@ -562,7 +562,7 @@ async def giveaway(ctx, winners: int, host: str, duration: str, *, prize: str):
     now = datetime.datetime.now(datetime.timezone.utc)
     dayInHours = day * 24
     hour += dayInHours
-    duration = hour+"h"+minutes
+    duration = str(hour)+"h"+str(minutes)
     await db.execute('''INSERT INTO giveaways (message_id,winners,prize,start,host,duration) VALUES ($1,$2,$3,$4,$5,$6);''',messageID,winners,prize,now,host,duration)
     giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
     if giveawaysList is None:
