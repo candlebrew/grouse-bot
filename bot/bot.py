@@ -411,6 +411,7 @@ def is_admin():
 async def on_ready():
     bot.loop.create_task(season_task())
     bot.loop.create_task(timer_task())
+    #bot.loop.create_task(giveaway_task())
 
 async def season_task():
     while True:
@@ -532,6 +533,9 @@ async def giveaway(ctx, winners: int, duration: str, *, prize: str):
     now = datetime.datetime.now(datetime.timezone.utc)
     await db.execute('''INSERT INTO giveaways (message_id,winners,prize,start,duration) VALUES ($1,$2,$3,$4,$5);''',messageID,winners,prize,now,duration)
     giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
+    if giveawaysList is None:
+        giveawaysList = []
+        
     giveawaysList.append(messageID)
     await db.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
     
