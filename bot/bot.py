@@ -495,6 +495,7 @@ async def giveaway_task():
                     users = await giveaway.reactions[0].users().flatten()
                     winners = await db3.fetchval("SELECT winners FROM giveaways WHERE message_id = $1;",y)
                     prize = await db3.fetchval("SELECT prize FROM giveaways WHERE message_id = $1;",y)
+                    host = await db3.fetchval("SELECT host FROM giveaways WHERE message_id = $1;",y)
                     
                     blacklist = await db3.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
                     
@@ -518,9 +519,9 @@ async def giveaway_task():
                         for winner in mentionList:
                             winMessage += winner
                             winMessage += " "
-                        winMessage += f"won the prize: {prize}!"
+                        winMessage += f"won the giveaway hosted by {host}\nPrize: {prize}!"
                     else:
-                        winMessage = f"Congratulations! {mentionList[0]} won the prize: {prize}!"
+                        winMessage = f"Congratulations! {mentionList[0]} won the giveaway hosted by {host}\nPrize: {prize}!"
                         
                     await channel.send(winMessage)
                 
@@ -531,20 +532,38 @@ async def giveaway_task():
 
 @bot.command()
 @is_admin()
-async def giveaway(ctx, winners: int, duration: str, *, prize: str):
+async def giveaway(ctx, winners: int, host: str, duration: str, *, prize: str):
     try:
-        hour, minutes = map(int, duration.split("h"))
+        day, suffix = map(str, duration.split("d"))
+        hour, minutes = map(str, suffix.split("h"))
+        day = int(day)
+        hour = int(hour)
+        minutes = int(minutes)
     except:
-        await ctx.send("Please send duration in #h# format! Ex. `1h40` for 1 hour & 40 minutes.")
+        await ctx.send("Please send duration in #d#h# format! Ex. `1d2h30` for 1 day, 2 hours, & 30 minutes.")
         return
     
+    hostList = ctx.mentions
+    emptyList = []
+    host = ""
+    
+    if hostList is None or hostList == emptyList:
+        host = "Grouse House "
+    else:
+        for user in hostList:
+            host += user.mention
+            host += " "
+    
     channel = bot.get_channel(giveawayChannel)
-    message = await channel.send(f"**G I V E A W A Y**\nPrize: **{prize}**\nGiveaway will run **{hour} hour(s)** and **{minutes} minute(s)**.\n**React with :tada: to enter!**")
+    message = await channel.send(f"**G I V E A W A Y**\nHost: {host}\nPrize: **{prize}**\nGiveaway will run **{day} day(s)**, **{hour} hour(s)** and **{minutes} minute(s)**.\n**React with :tada: to enter!**")
     messageID = message.id
     await message.add_reaction("🎉")
     
     now = datetime.datetime.now(datetime.timezone.utc)
-    await db.execute('''INSERT INTO giveaways (message_id,winners,prize,start,duration) VALUES ($1,$2,$3,$4,$5);''',messageID,winners,prize,now,duration)
+    dayInHours = day * 24
+    hour += dayInHours
+    duration = hour+"h"+minutes
+    await db.execute('''INSERT INTO giveaways (message_id,winners,prize,start,host,duration) VALUES ($1,$2,$3,$4,$5,$6);''',messageID,winners,prize,now,host,duration)
     giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
     if giveawaysList is None:
         giveawaysList = []
