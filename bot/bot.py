@@ -543,7 +543,7 @@ async def giveaway(ctx, winners: int, host: str, duration: str, *, prize: str):
         await ctx.send("Please send duration in #d#h# format! Ex. `1d2h30` for 1 day, 2 hours, & 30 minutes.")
         return
     
-    hostList = ctx.mentions
+    hostList = ctx.message.mentions
     emptyList = []
     host = ""
     
