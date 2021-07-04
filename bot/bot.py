@@ -15,7 +15,7 @@ db = None
 db2 = None
 db3 = None
 
-giveawayChannel = 838940544804847636
+giveawayChannel = 838949725860397077
 
 masterSetupSQL = '''
     CREATE TABLE IF NOT EXISTS master_table (
