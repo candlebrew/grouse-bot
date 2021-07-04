@@ -411,7 +411,7 @@ def is_admin():
 async def on_ready():
     bot.loop.create_task(season_task())
     bot.loop.create_task(timer_task())
-    #bot.loop.create_task(giveaway_task())
+    bot.loop.create_task(giveaway_task())
 
 async def season_task():
     while True:
