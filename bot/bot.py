@@ -1137,6 +1137,23 @@ async def sql(ctx, *, sqlText: str):
     await db.execute(sqlText)
     await ctx.send("SQL complete.")
     
+@dev.command()
+@is_dev()
+async def reset(ctx, taskName: str):
+    taskList = ["season","timers","giveaways"]
+    
+    if taskName not in taskList:
+        await ctx.send("Use " + str(taskList))
+        return
+    elif taskName == "season":
+        bot.loop.create_task(season_task())
+    elif taskName == "timers":
+        bot.loop.create_task(timer_task())
+    elif taskName == "giveaways":
+        bot.loop.create_task(giveaway_task())
+    
+    await ctx.send(f"The {taskName} task has been reset.")
+    
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
 bot.run(token)
