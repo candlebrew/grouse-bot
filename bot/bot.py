@@ -527,7 +527,7 @@ async def giveaway(ctx, winners: int, duration: str, *, prize: str):
     channel = bot.get_channel(giveawayChannel)
     message = await channel.send(f"**G I V E A W A Y**\nPrize: **{prize}**\nGiveaway will run **{hour} hour(s)** and **{minutes} minute(s)**.\n**React with :tada: to enter!**")
     messageID = message.id
-    await message.add_reaction(message, "🎉")
+    await message.add_reaction("🎉")
     
     now = datetime.datetime.now(datetime.timezone.utc)
     await db.execute('''INSERT INTO giveaways (message_id,winners,prize,start,duration) VALUES ($1,$2,$3,$4,$5);''',messageID,winners,prize,now,duration)
