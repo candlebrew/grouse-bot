@@ -505,7 +505,7 @@ async def giveaway_task():
                         except:
                             pass
 
-                    winnersList = random.choices(users,k=winners)
+                    winnersList = random.sample(users,k=winners)
                     mentionList = []
                     for winner in winnersList:
                         mentionList.append(winner.mention)
