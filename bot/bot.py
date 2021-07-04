@@ -393,6 +393,11 @@ def is_dev():
         return ctx.message.author.id == devID
     return commands.check(predicate)
 
+def is_admin():
+    def predicate(ctx):
+        return ctx.message.author.id in []
+    return commands.check(predicate)
+
 ## Code Here ----------------------------------------------------------
 @bot.event
 async def on_ready():
@@ -461,8 +466,8 @@ async def timer_task():
                     timersList = await db2.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
                     timersList.remove(y)
                     await db2.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
-
-@bot.command(alisaes=["t"])
+                    
+@bot.command(aliases=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
     now = datetime.datetime.now()
     tempHour = now.hour - 7
@@ -989,6 +994,12 @@ async def timers(ctx):
 @is_dev()
 async def email(ctx):
     await ctx.send("Email is "+devEmail)
+    
+@dev.command()
+@is_dev()
+async def sql(ctx, *, sqlText: str):
+    await db.execute(sqlText)
+    await ctx.send("SQL complete.")
     
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
