@@ -509,7 +509,17 @@ async def giveaway_task():
                     for winner in winnersList:
                         mentionList.append(winner.mention)
 
-                    await channel.send(f"Congratulations! {mentionList} won the prize: {prize}!")
+                    await giveaway.edit(f"**G I V E A W A Y**\n~~Prize: **{prize}**~~\nThis giveaway has ***ended.***")
+                    if len(mentionList) > 1:
+                        winMessage = "Congratulations! "
+                        for winner in mentionList:
+                            winMessage += winner
+                            winMessage += " "
+                        winMessage += f"won the prize: {prize}!"
+                    else:
+                        winMessage = f"Congratulations! {mentionList[0]} won the prize: {prize}!"
+                        
+                    await channel.send(winMessage)
                 
                     await db3.execute('''DELETE FROM giveaways WHERE id = $1;''',y)
                     giveawaysList = await db3.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
