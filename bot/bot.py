@@ -13,6 +13,9 @@ import aiohttp
 
 db = None
 db2 = None
+db3 = None
+
+giveawayChannel = 838975738115260458
 
 masterSetupSQL = '''
     CREATE TABLE IF NOT EXISTS master_table (
@@ -60,6 +63,11 @@ async def run():
     global db2
     
     db2 = await asyncpg.connect(dsn=dbURL, ssl='require')
+    
+    #third connection to allow multiple tasks to run in bg
+    global db3
+    
+    db3 = await asyncpg.connect(dsn=dbURL, ssl='require')
     
     await db.execute(masterSetupSQL)
     await db.execute(timerSetupSQL)
@@ -395,7 +403,7 @@ def is_dev():
 
 def is_admin():
     def predicate(ctx):
-        return ctx.message.author.id in []
+        return ctx.message.author.id in [devID, 475855997416505344, 220695415622860801, 555095079870529547, 223608160886325249]
     return commands.check(predicate)
 
 ## Code Here ----------------------------------------------------------
@@ -466,6 +474,120 @@ async def timer_task():
                     timersList = await db2.fetchval('''SELECT list FROM timers WHERE type = '00MASTER00';''')
                     timersList.remove(y)
                     await db2.execute('''UPDATE timers SET list = $1 WHERE type = '00MASTER00';''',timersList)
+
+async def giveaway_task():
+    while True:
+        await asyncio.sleep(60)
+        giveawayList = await db3.fetchval("SELECT giveaways FROM master_table WHERE id = '00MASTER00';")
+        now = datetime.datetime.now(datetime.timezone.utc)
+        emptyList = []
+        if giveawayList != emptyList:
+            channel = bot.get_channel(giveawayChannel)
+            for y in giveawayList:
+                startTime = await db3.fetchval('''SELECT start FROM giveaways WHERE id = $1;''',y)
+                duration = await db3.fetchval('''SELECT duration FROM giveaways WHERE id = $1;''',y)
+                hour, minutes = map(int, duration.split("h"))
+                durationDelta = datetime.timedelta(hours=hour,minutes=minutes)
+                timePassed = now - startTime
+                if timePassed >= durationDelta:
+                    giveaway = channel.fetch_message(y)
+                    users = await giveaway.reactions[0].users().flatten()
+                    winners = await db3.fetchval("SELECT winners FROM giveaways WHERE id = $1;",y)
+                    
+                    blacklist = await db3.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
+                    
+                    for userID in blacklist:
+                        bannedUser = await bot.fetch_user(userID)
+                        try:
+                            users.remove(bannedUser)
+                        except:
+                            pass
+
+                    winnersList = random.choices(users,k=winners)
+                    mentionList = []
+                    for winner in winnersList:
+                        mentionList.append(winner.mention)
+
+                    await channel.send(f"Congratulations! {mentionList} won the prize: {prize}!")
+                
+                    await db3.execute('''DELETE FROM giveaways WHERE id = $1;''',y)
+                    giveawaysList = await db3.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
+                    giveawaysList.remove(y)
+                    await db3.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
+
+@bot.command()
+@is_admin()
+async def giveaway(ctx, winners: int, duration: str, *, prize: str):
+    try:
+        hour, minutes = map(int, duration.split("h"))
+    except:
+        await ctx.send("Please send duration in #h# format! Ex. `1h40` for 1 hour & 40 minutes.")
+        return
+    
+    channel = bot.get_channel(giveawayChannel)
+    message = await channel.send(f"**G I V E A W A Y**\nPrize: **{prize}**\nGiveaway will run **{hour} hour(s)** and **{minutes} minute(s)**.\n**React with :tada: to enter!")
+    messageID = message.id
+    await client.add_reaction(message, "🎉")
+    
+    now = datetime.datetime.now(datetime.timezone.utc)
+    await db.execute('''INSERT INTO giveaways (message_id,winners,prize,start,duration) VALUES ($1,$2,$3,$4,$5);''',messageID,winners,prize,now,duration)
+    giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
+    giveawaysList.append(messageID)
+    await db.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
+    
+    await ctx.send("Giveaway successfully created!")
+    
+@bot.group()
+@is_admin()
+async def banlist(ctx):
+    pass
+    
+@banlist.command()
+@is_admin()
+async def add(ctx, user: discord.Member):
+    userID = user.id
+    
+    banList = await db.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
+    if banList is None:
+        banList = []
+        
+    banList.append(userID)
+    
+    await db.execute("UPDATE master_table SET giveaway_blacklist = $1 WHERE id = '00MASTER00';",banList)
+    
+    await ctx.send("User has been added to the giveaway banlist.")
+    
+@banlist.command()
+@is_admin()
+async def view(ctx):
+    banList = await db.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
+    if banList is None:
+        banList = []
+        
+    namesList = []
+
+    for userID in banList:
+        try:
+            user = await bot.fetch_user(userID)
+            name = user.name
+        except:
+            name = "error"
+        try:
+            grouseGuild = bot.get_guild(grouseID)
+            guildMember = await grouseGuild.fetch_member(userID)
+            displayName = guildMember.display_name
+        except:
+            displayName = "error"
+        fullName = name + " | " + str(displayName)
+        
+        namesList.append(fullName)
+        
+    messageText = ""
+    
+    for name in namesList:
+        messageText += name + "\n"
+    
+    await ctx.send("The following users are banned from winning giveaways: \n" + messageText)
                     
 @bot.command(aliases=["t"])
 async def time(ctx, timeType: typing.Optional[str]):
