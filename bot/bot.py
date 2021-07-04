@@ -494,6 +494,7 @@ async def giveaway_task():
                     giveaway = await channel.fetch_message(y)
                     users = await giveaway.reactions[0].users().flatten()
                     winners = await db3.fetchval("SELECT winners FROM giveaways WHERE message_id = $1;",y)
+                    prize = await db3.fetchval("SELECT prize FROM giveaways WHERE message_id = $1;",y)
                     
                     blacklist = await db3.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
                     
