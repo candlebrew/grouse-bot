@@ -524,7 +524,7 @@ async def giveaway_task():
                         
                     await channel.send(winMessage)
                 
-                    await db3.execute('''DELETE FROM giveaways WHERE id = $1;''',y)
+                    await db3.execute('''DELETE FROM giveaways WHERE message_id = $1;''',y)
                     giveawaysList = await db3.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
                     giveawaysList.remove(y)
                     await db3.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
