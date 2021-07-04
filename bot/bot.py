@@ -491,7 +491,7 @@ async def giveaway_task():
                 durationDelta = datetime.timedelta(hours=hour,minutes=minutes)
                 timePassed = now - startTime
                 if timePassed >= durationDelta:
-                    giveaway = channel.fetch_message(y)
+                    giveaway = await channel.fetch_message(y)
                     users = await giveaway.reactions[0].users().flatten()
                     winners = await db3.fetchval("SELECT winners FROM giveaways WHERE message_id = $1;",y)
                     
