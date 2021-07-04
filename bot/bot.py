@@ -485,15 +485,15 @@ async def giveaway_task():
         if giveawayList != emptyList:
             channel = bot.get_channel(giveawayChannel)
             for y in giveawayList:
-                startTime = await db3.fetchval('''SELECT start FROM giveaways WHERE id = $1;''',y)
-                duration = await db3.fetchval('''SELECT duration FROM giveaways WHERE id = $1;''',y)
+                startTime = await db3.fetchval('''SELECT start FROM giveaways WHERE message_id = $1;''',y)
+                duration = await db3.fetchval('''SELECT duration FROM giveaways WHERE message_id = $1;''',y)
                 hour, minutes = map(int, duration.split("h"))
                 durationDelta = datetime.timedelta(hours=hour,minutes=minutes)
                 timePassed = now - startTime
                 if timePassed >= durationDelta:
                     giveaway = channel.fetch_message(y)
                     users = await giveaway.reactions[0].users().flatten()
-                    winners = await db3.fetchval("SELECT winners FROM giveaways WHERE id = $1;",y)
+                    winners = await db3.fetchval("SELECT winners FROM giveaways WHERE message_id = $1;",y)
                     
                     blacklist = await db3.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
                     
