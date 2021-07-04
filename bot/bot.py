@@ -510,7 +510,9 @@ async def giveaway_task():
                     for winner in winnersList:
                         mentionList.append(winner.mention)
 
-                    await giveaway.edit(f"**G I V E A W A Y**\n~~Prize: **{prize}**~~\nThis giveaway has ***ended.***")
+                    editText = f"**G I V E A W A Y**\n~~Prize: **{prize}**~~\nThis giveaway has ***ended.***"
+                        
+                    await giveaway.edit(editText)
                     if len(mentionList) > 1:
                         winMessage = "Congratulations! "
                         for winner in mentionList:
