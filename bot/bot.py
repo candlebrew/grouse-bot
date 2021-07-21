@@ -1192,6 +1192,7 @@ async def delgiveaway(ctx, messageID: int):
     except:
         pass
     giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
+    print(giveawaysList)
     giveawaysList.remove(messageID)
     await db.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
     await ctx.send("Complete.")
