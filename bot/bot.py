@@ -1184,6 +1184,28 @@ async def reset(ctx, taskName: str):
     
     await ctx.send(f"The {taskName} task has been reset.")
     
+@dev.command()
+@is_dev()
+async def delgiveaway(ctx, message: str):
+    try:
+        await db.execute('''DELETE FROM giveaways WHERE message_id = $1;''',message)
+    except:
+        pass
+    giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
+    giveawaysList.remove(message)
+    await db.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
+    await ctx.send("Complete.")
+    
+@dev.command()
+@is_dev()
+async def editgiveaway(ctx, oldID: int, newID: int):
+    await db.execute("UPDATE giveaways SET message_id = $1 WHERE message_id = $2;",newID,oldID)
+    giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
+    giveawaysList.remove(oldID)
+    giveawaysList.append(newID)
+    await db.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
+    await ctx.send("Complete.")
+    
 ## Bot Setup & Activation ----------------------------------------------------------
 asyncio.get_event_loop().run_until_complete(run())
 bot.run(token)
