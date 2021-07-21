@@ -1186,13 +1186,13 @@ async def reset(ctx, taskName: str):
     
 @dev.command()
 @is_dev()
-async def delgiveaway(ctx, message: int):
+async def delgiveaway(ctx, messageID: int):
     try:
-        await db.execute('''DELETE FROM giveaways WHERE message_id = $1;''',message)
+        await db.execute('''DELETE FROM giveaways WHERE message_id = $1;''',messageID)
     except:
         pass
     giveawaysList = await db.fetchval('''SELECT giveaways FROM master_table WHERE id = '00MASTER00';''')
-    giveawaysList.remove(message)
+    giveawaysList.remove(messageID)
     await db.execute('''UPDATE master_table SET giveaways = $1 WHERE id = '00MASTER00';''',giveawaysList)
     await ctx.send("Complete.")
     
