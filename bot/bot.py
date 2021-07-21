@@ -1186,7 +1186,7 @@ async def reset(ctx, taskName: str):
     
 @dev.command()
 @is_dev()
-async def delgiveaway(ctx, message: str):
+async def delgiveaway(ctx, message: int):
     try:
         await db.execute('''DELETE FROM giveaways WHERE message_id = $1;''',message)
     except:
