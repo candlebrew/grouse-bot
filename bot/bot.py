@@ -1045,7 +1045,7 @@ async def dev(ctx):
 async def set(ctx):
     pass
     
-@dev.group()
+@dev.group(pass_context=True)
 async def get(ctx):
     pass
     
