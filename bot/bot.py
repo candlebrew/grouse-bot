@@ -580,7 +580,7 @@ async def banlist(ctx):
     
 @banlist.command()
 @is_admin()
-async def add(ctx, *, user: discord.Member):
+async def add(ctx, *, user: discord.User):
     userID = user.id
     
     banList = await db.fetchval("SELECT giveaway_blacklist FROM master_table WHERE id = '00MASTER00';")
