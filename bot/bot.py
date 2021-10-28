@@ -7,7 +7,7 @@ import os
 import asyncio
 import asyncpg
 import io
-import aiohttp
+import aiohttp 
 
 ## https://discord.com/api/oauth2/authorize?client_id=838960211187859508&permissions=257104&scope=bot
 
